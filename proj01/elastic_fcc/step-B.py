@@ -24,8 +24,8 @@ curr_dir = os.getcwd()
 
 temp_dir = curr_dir.replace('work','temp')
 
-os.system('mkdir {0}/graph'.format(temp_dir))
-os.system('mkdir {0}/result'.format(temp_dir))
+os.system('mkdir -p {0}/graph'.format(temp_dir))
+os.system('mkdir -p {0}/result'.format(temp_dir))
 
 result = '{0}/result/result-{1}.txt'.format(temp_dir,name)
 os.system('rm {0}'.format(result))
@@ -83,7 +83,7 @@ print volumes, energies
 
 eos = EquationOfState(volumes, energies)
 v0, e0, B = eos.fit()
-eos.plot('graph/{0}.png'.format(name))
+eos.plot('{0}/graph/{1}.png'.format(temp_dir, name))
 
 save(result, '{0} {1} {2} {3}'.format(v0, e0, B/kJ*1.0e24, (4.0 * v0) ** (1.0 / 3.0)))
 
