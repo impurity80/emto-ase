@@ -22,15 +22,16 @@ print rank, size
 name = 'C'
 
 curr_dir = os.getcwd()
-os.system('mkdir eos')
-os.system('mkdir result')
 
 temp_dir = curr_dir.replace('work','temp')
 
-result = '{0}/result/result-{1}.txt'.format(curr_dir,name)
+os.system('mkdir -p {0}/graph'.format(temp_dir))
+os.system('mkdir -p {0}/result'.format(temp_dir))
+
+result = '{0}/result/result-{1}.txt'.format(temp_dir,name)
 os.system('rm {0}'.format(result))
 
-result_sum = '{0}/result/summary-{1}.csv'.format(curr_dir,name)
+result_sum = '{0}/result/summary-{1}.csv'.format(temp_dir,name)
 os.system('rm {0}'.format(result_sum))
 
 save(result, '{0}'.format(name))
@@ -107,7 +108,9 @@ ffit = poly.polyval(x_new, coefs)
 
 plt.scatter(OPTIONS, energies)
 plt.plot(x_new, ffit)
-plt.savefig('C.png')
+plt.savefig('{0}.png'.format(name))
+
+os.system('mv {0}.png {1}/graph'.format(name, temp_dir))
 
 
 save(result, OPTIONS)

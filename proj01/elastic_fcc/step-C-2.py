@@ -22,15 +22,16 @@ print rank, size
 name = 'C-2'
 
 curr_dir = os.getcwd()
-os.system('mkdir eos')
-os.system('mkdir result')
 
 temp_dir = curr_dir.replace('work','temp')
 
-result = '{0}/result/result-{1}.txt'.format(curr_dir,name)
+os.system('mkdir -p {0}/graph'.format(temp_dir))
+os.system('mkdir -p {0}/result'.format(temp_dir))
+
+result = '{0}/result/result-{1}.txt'.format(temp_dir,name)
 os.system('rm {0}'.format(result))
 
-result_sum = '{0}/result/summary-{1}.csv'.format(curr_dir,name)
+result_sum = '{0}/result/summary-{1}.csv'.format(temp_dir,name)
 os.system('rm {0}'.format(result_sum))
 
 save(result, '{0}'.format(name))
@@ -67,7 +68,7 @@ for opt in OPTIONS:
     print atoms.get_cell()
 
     calc = EMTO()
-    calc.set(dir='{0}/{1}/opt-{1:0.3f}'.format(temp_dir, name, opt),
+    calc.set(dir='{0}/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
              lat=11,
              ncpa=20,
              amix=0.05,
@@ -97,13 +98,18 @@ C = coefs[2]/volumes[0]/kJ*1.0e24
 
 print C
 
+save(result, C)
+
 x_new = np.linspace(OPTIONS[0]-0.01, OPTIONS[-1]+0.01, num=len(OPTIONS)*10)
 
 ffit = poly.polyval(x_new, coefs)
 
 plt.scatter(OPTIONS, energies)
 plt.plot(x_new, ffit)
-plt.savefig('C-2.png')
+
+plt.savefig('{0}.png'.format(name))
+
+os.system('mv {0}.png {1}/graph'.format(name, temp_dir))
 
 
 save(result, OPTIONS)
