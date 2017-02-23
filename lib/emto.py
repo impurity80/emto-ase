@@ -289,7 +289,8 @@ kstr_keys = [
     'nprn',
     'dmax',
     'rwats'
-    'kw2'
+    'kw2',
+    'aw'
 ]
 
 kgrn_keys = [
@@ -399,6 +400,7 @@ class EMTO(Calculator):
         self.kstr_params['dmax'] = 1.70
         self.kstr_params['rwats'] = 0.10
         self.kstr_params['kw2'] = 0.0
+        self.kstr_params['aw'] = 0.70
 
         self.kgrn_params['strt'] = 'A'
         self.kgrn_params['msgl'] = 0
@@ -677,10 +679,7 @@ class EMTO(Calculator):
             kstr.write('QX(1)....=       0.0 QY(1)...=       0.0 QZ(1)...=       0.0\n')
 
         for atom in atoms:
-            if atom.symbol == 'C':
-                kstr.write('a/w(IQ)..= 0.60 0.60 0.60 0.60\n')
-            else :
-                kstr.write('a/w(IQ)..= 0.70 0.70 0.70 0.70\n')
+            kstr.write('a/w(IQ)..= {0:5.2f}{0:5.2f}{0:5.2f}{0:5.2f}\n'.format(self.kstr_params['aw']))
 
         kstr.write('LAMDA....={:10.4f} '.format(self.common_params['lamda']))
         kstr.write('AMAX....={:10.4f} '.format(self.common_params['amax']))
