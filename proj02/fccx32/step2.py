@@ -20,7 +20,7 @@ rank = comm.Get_rank()
 print rank, size
 
 
-name = '1'
+name = '2'
 
 curr_dir = os.getcwd()
 
@@ -71,7 +71,7 @@ for opt in OPTIONS:
     alloys = []
     alloys.append(Alloy(1, 'Fe', 0.5, 1.0))
     alloys.append(Alloy(1, 'Fe', 0.5, -1.0))
-    alloys.append(Alloy(2, 'C', 1.0, 0.0))
+    alloys.append(Alloy(2, 'N', 1.0, 0.0))
 
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),

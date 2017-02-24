@@ -114,7 +114,9 @@ ffit = poly.polyval(x_new, coefs)
 
 plt.scatter(OPTIONS, energies)
 plt.plot(x_new, ffit)
-plt.savefig('C-2.png')
+plt.savefig('{0}.png'.format(name))
+
+os.system('mv {0}.png {1}/graph'.format(name, temp_dir))
 
 
 save(result, OPTIONS)
