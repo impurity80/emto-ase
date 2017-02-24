@@ -76,7 +76,7 @@ for opt in OPTIONS:
 
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
-             lat=2,
+             lat=1,
              kpts=[13,13,13],
              dos='D',
              aw = 0.60
