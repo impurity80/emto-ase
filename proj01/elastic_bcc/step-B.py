@@ -40,32 +40,24 @@ OPTIONS = np.linspace(0.98, 1.02, 9)
 volumes = []
 energies = []
 
-cr = 0.15
-ni = 0.15
-fe = 1.0-cr-ni
+cr = 0.01
+ni = 0.01
+fe = 1.0
 
 for opt in OPTIONS:
 
-    l = 3.602 * opt
-    atoms = bulk('Fe', 'fcc', a=l)
+    l = 2.857 * opt
+    atoms = bulk('Fe', 'bcc', a=l)
 
     atoms.set_tags([1])
 
     alloys = []
-    alloys.append(Alloy(1, 'Fe', fe / 2, 1.0))
-    alloys.append(Alloy(1, 'Fe', fe / 2, -1.0))
-    alloys.append(Alloy(1, 'Cr', cr / 2, 1.0))
-    alloys.append(Alloy(1, 'Cr', cr / 2, -1.0))
-    alloys.append(Alloy(1, 'Ni', ni / 2, 1.0))
-    alloys.append(Alloy(1, 'Ni', ni / 2, -1.0))
-
+    alloys.append(Alloy(1, 'Fe', fe , 1.0))
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
-             lat=2,
-             ncpa=20,
-             amix=0.05,
-             afm='F',
-             kpts=[13, 13, 13],
+             lat=3,
+             kpts=[13,13,13],
+             dmax=2.20,
              )
     calc.set_alloys(alloys)
 
@@ -83,7 +75,7 @@ print volumes, energies
 
 eos = EquationOfState(volumes, energies)
 v0, e0, B = eos.fit()
-eos.plot('graph/{0}.png'.format(name))
+eos.plot('{0}/graph/{1}.png'.format(temp_dir, name))
 
 save(result, '{0} {1} {2} {3}'.format(v0, e0, B/kJ*1.0e24, (4.0 * v0) ** (1.0 / 3.0)))
 

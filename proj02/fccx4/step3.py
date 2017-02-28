@@ -19,14 +19,14 @@ rank = comm.Get_rank()
 
 print rank, size
 
-name = 'C'
+name = '3'
 
 curr_dir = os.getcwd()
 
 temp_dir = curr_dir.replace('work','temp')
 
-os.system('mkdir {0}/graph'.format(temp_dir))
-os.system('mkdir {0}/result'.format(temp_dir))
+os.system('mkdir -p {0}/graph'.format(temp_dir))
+os.system('mkdir -p {0}/result'.format(temp_dir))
 
 result = '{0}/result/result-{1}.txt'.format(temp_dir,name)
 os.system('rm {0}'.format(result))
@@ -37,37 +37,45 @@ os.system('rm {0}'.format(result_sum))
 save(result, '{0}'.format(name))
 save(result_sum, '{0}'.format(name))
 
-OPTIONS = np.linspace(0, 0.05, 6)
+OPTIONS = np.linspace(0.98, 1.02, 9)
 volumes = []
 energies = []
 
-cr = 0.01
-ni = 0.01
-fe = 1.0
+cr = 0.15
+ni = 0.15
+fe = 1.0-cr-ni
 
 for opt in OPTIONS:
 
-    l = 2.857
-    atoms = bulk('Fe', 'bcc', a=l)
+    l = 3.602 * opt
 
-    atoms.set_tags([1])
+    atoms = Atoms('Fe4',
+              scaled_positions=[
+                                (0, 0, 0),
+                                (0.5, 0.5, 0),
+                                (0.5, 0, 0.5),
+                                (0, 0.5, 0.5)],
+              cell=[l,l,l],
+              pbc=(1,1,1))
+
+    atoms.set_tags([1, 1, 1, 1])
+
+    # view(atoms)
+
+    atoms = atoms + Atom('C', position=(0,0,0.5*l), tag=2)
 
     alloys = []
-    alloys.append(Alloy(1, 'Fe', fe , 1.0))
-
-#    dist = [[1+opt, 0, 0], [0, 1+opt, 0], [0, 0, 1/(1+opt)**2]]
-    dist = [[1+opt, 0 , 0], [0, 1-opt, 0], [0, 0, 1 / (1 - opt ** 2)]]
-
-    atoms.set_cell(np.dot(dist, atoms.get_cell()), scale_atoms=True)
-
-    print atoms.get_cell()
+    alloys.append(Alloy(1, 'Fe', 0.5, 1.0))
+    alloys.append(Alloy(1, 'Fe', 0.5, -1.0))
+    alloys.append(Alloy(2, 'C', 0.5, 0.0))
+    alloys.append(Alloy(2, 'N', 0.5, 0.0))
 
     calc = EMTO()
-    calc.set(dir='{0}/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
-             lat=10,
-             dmax=2.20,
-             kpts=[0, 15, 0],
-             sofc='Y'
+    calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
+             lat=1,
+             kpts=[13,13,13],
+             dos='D',
+             aw = 0.60
              )
     calc.set_alloys(alloys)
 
@@ -85,25 +93,11 @@ for opt in OPTIONS:
 
 print volumes, energies
 
+eos = EquationOfState(volumes, energies)
+v0, e0, B = eos.fit()
+eos.plot('{0}/graph/{1}.png'.format(temp_dir, name))
 
-OPTIONS = (-1.0*OPTIONS[::-1]).tolist() + OPTIONS.tolist()
-energies = (energies[::-1]) + energies
-
-
-coefs = poly.polyfit(OPTIONS, energies, 3)
-
-C = coefs[2]/volumes[0]/kJ*1.0e24
-
-print C
-
-x_new = np.linspace(OPTIONS[0]-0.01, OPTIONS[-1]+0.01, num=len(OPTIONS)*10)
-
-ffit = poly.polyval(x_new, coefs)
-
-plt.scatter(OPTIONS, energies)
-plt.plot(x_new, ffit)
-plt.savefig('C.png')
-
+save(result, '{0} {1} {2} {3}'.format(v0, e0, B/kJ*1.0e24, (4.0 * v0) ** (1.0 / 3.0)))
 
 save(result, OPTIONS)
 save(result, volumes)
@@ -111,7 +105,9 @@ save(result, energies)
 
 save(result, '------------------------')
 
-save(result_sum, '{0}, {1}, {2}, {3}'.format(name, C, volumes, energies))
+save(result_sum, '{0}, {1}, {2}, {3}, {4}, {5}'.format(name, e0, v0, B, volumes, energies))
+
+
 
 
 

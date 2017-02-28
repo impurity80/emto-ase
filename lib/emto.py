@@ -47,22 +47,22 @@ elements = {}
 #for key in element_keys:
 #    elements[key] = None
 
-elements['B'] =  'Iz=   5 Norb=  3 Ion=  0 Config= 2s2_2p1\n' \
+elements['B'] =  'Iz=  05 Norb=  3 Ion=  0 Config= 2s2_2p1\n' \
                   'n      1  2  2\n' \
                   'Kappa -1 -1  1\n' \
                   'Occup  2  2  1\n' \
                   'Valen  0  1  1\n'
-elements['C'] =  'Iz=   6 Norb=  3 Ion=  0 Config= 2s2_2p2\n' \
+elements['C'] =  'Iz=  06 Norb=  3 Ion=  0 Config= 2s2_2p2\n' \
                   'n      1  2  2\n' \
                   'Kappa -1 -1  1\n' \
                   'Occup  2  2  2\n' \
                   'Valen  0  1  1\n'
-elements['N'] =  'Iz=   7 Norb=  4 Ion=  0 Config= 2s2_2p3\n' \
+elements['N'] =  'Iz=  07 Norb=  4 Ion=  0 Config= 2s2_2p3\n' \
                   'n      1  2  2  2\n' \
                   'Kappa -1 -1  1 -2\n' \
                   'Occup  2  2  2  1\n' \
                   'Valen  0  1  1  1\n'
-elements['O'] =  'Iz=   8 Norb=  4 Ion=  0 Config= 2s2_2p4\n' \
+elements['O'] =  'Iz=  08 Norb=  4 Ion=  0 Config= 2s2_2p4\n' \
                   'n      1  2  2  2\n' \
                   'Kappa -1 -1  1 -2\n' \
                   'Occup  2  2  2  2\n' \
