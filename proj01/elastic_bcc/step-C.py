@@ -47,7 +47,7 @@ fe = 1.0
 
 for opt in OPTIONS:
 
-    l = 2.857
+    l = 2.8784
     atoms = bulk('Fe', 'bcc', a=l)
 
     atoms.set_tags([1])
@@ -63,11 +63,11 @@ for opt in OPTIONS:
     print atoms.get_cell()
 
     calc = EMTO()
-    calc.set(dir='{0}/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
+    calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
              lat=10,
+             kpts=[27,27,27],
              dmax=2.20,
-             kpts=[0, 15, 0],
-             sofc='Y'
+             amix=0.02,
              )
     calc.set_alloys(alloys)
 
@@ -102,7 +102,9 @@ ffit = poly.polyval(x_new, coefs)
 
 plt.scatter(OPTIONS, energies)
 plt.plot(x_new, ffit)
-plt.savefig('C.png')
+plt.savefig('{0}.png'.format(name))
+
+os.system('mv {0}.png {1}/graph'.format(name, temp_dir))
 
 
 save(result, OPTIONS)
