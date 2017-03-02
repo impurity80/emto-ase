@@ -19,14 +19,14 @@ rank = comm.Get_rank()
 
 print rank, size
 
-name = 'C44'
+name = 'C'
 
 curr_dir = os.getcwd()
 
 temp_dir = curr_dir.replace('work','temp')
 
-os.system('mkdir -p {0}/graph'.format(temp_dir))
-os.system('mkdir -p {0}/result'.format(temp_dir))
+os.system('mkdir {0}/graph'.format(temp_dir))
+os.system('mkdir {0}/result'.format(temp_dir))
 
 result = '{0}/result/result-{1}.txt'.format(temp_dir,name)
 os.system('rm {0}'.format(result))
@@ -41,23 +41,22 @@ OPTIONS = np.linspace(0, 0.05, 6)
 volumes = []
 energies = []
 
-cr = 0.15
-ni = 0.15
+cr = 0.01
+ni = 0.01
 fe = 1.0
 
 for opt in OPTIONS:
 
     l = 2.8784
-    atoms = bulk('Fe', 'fcc', a=l)
+    atoms = bulk('Fe', 'bcc', a=l, cubic=True)
 
-    scale = [[np.sqrt(2),0,0],[0,np.sqrt(2),0],[0,0,1]]
-    atoms.set_cell(np.dot(scale, atoms.get_cell()), scale_atoms=True)
+    atoms.set_tags([1, 1])
 
     alloys = []
-    alloys.append(Alloy(1, 'Fe', fe, 1.0))
+    alloys.append(Alloy(1, 'Fe', fe , 1.0))
 
-    #    dist = [[1+opt, 0, 0], [0, 1+opt, 0], [0, 0, 1/(1+opt)**2]]
-    dist = [[1 + opt, 0, 0], [0, 1 - opt, 0], [0, 0, 1 / (1 - opt ** 2)]]
+#    dist = [[1+opt, 0, 0], [0, 1+opt, 0], [0, 0, 1/(1+opt)**2]]
+    dist = [[1+opt, 0 , 0], [0, 1-opt, 0], [0, 0, 1 / (1 - opt ** 2)]]
 
     atoms.set_cell(np.dot(dist, atoms.get_cell()), scale_atoms=True)
 
@@ -65,10 +64,10 @@ for opt in OPTIONS:
 
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
-             lat=11,
-             kpts=[13, 13, 13],
+             lat=10,
+             kpts=[27,27,27],
              dmax=2.20,
-             amix=0.02
+             amix=0.02,
              )
     calc.set_alloys(alloys)
 
@@ -93,9 +92,9 @@ energies = (energies[::-1]) + energies
 
 coefs = poly.polyfit(OPTIONS, energies, 3)
 
-C44 = coefs[2]/volumes[0]/kJ*1.0e24
+C = coefs[2]/volumes[0]/kJ*1.0e24
 
-print C44
+print C
 
 x_new = np.linspace(OPTIONS[0]-0.01, OPTIONS[-1]+0.01, num=len(OPTIONS)*10)
 
@@ -107,18 +106,14 @@ plt.savefig('{0}.png'.format(name))
 
 os.system('mv {0}.png {1}/graph'.format(name, temp_dir))
 
+
 save(result, OPTIONS)
 save(result, volumes)
 save(result, energies)
 
 save(result, '------------------------')
 
-save(result_sum, '{0}, {1}, {2}, {3}'.format(name, C44, volumes, energies))
-
-
-
-
-
+save(result_sum, '{0}, {1}, {2}, {3}'.format(name, C, volumes, energies))
 
 
 
