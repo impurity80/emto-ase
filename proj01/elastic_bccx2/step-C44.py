@@ -47,16 +47,19 @@ fe = 1.0
 
 for opt in OPTIONS:
 
-    l = 2.8784
+    l = 2.8824
     atoms = bulk('Fe', 'bcc', a=l, cubic=True)
+#    atoms.rotate('z', pi/4, rotate_cell=True)
 
     atoms.set_tags([1, 1])
 
     alloys = []
-    alloys.append(Alloy(1, 'Fe', fe , 1.0))
+    alloys.append(Alloy(1, 'Fe_1', fe , 1.0))
 
 #    dist = [[1+opt, 0, 0], [0, 1+opt, 0], [0, 0, 1/(1+opt)**2]]
-    dist = [[1, opt , 0], [opt, 1, 0], [0, 0, 1 / (1 - opt ** 2)]]
+#    dist = [[1+opt, 0 , 0], [0, 1-opt, 0], [0, 0, 1 / (1 - opt ** 2)]]
+
+    dist = [[1, opt, 0], [opt, 1, 0], [0, 0, 1 / (1 - opt ** 2)]]
 
     atoms.set_cell(np.dot(dist, atoms.get_cell()), scale_atoms=True)
 
@@ -64,7 +67,7 @@ for opt in OPTIONS:
 
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
-             lat=14,
+             lat=11,
              kpts=[27,27,27],
              dmax=2.20,
              amix=0.02,

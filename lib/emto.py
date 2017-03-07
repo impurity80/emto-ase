@@ -117,10 +117,15 @@ elements['Mn'] =  'Iz=  25 Norb= 10 Ion=  0 Config= 3d5_4s2\n' \
                   'Kappa -1 -1  1 -2 -1  1 -2  2 -3 -1\n' \
                   'Occup  2  2  2  4  2  2  4  4  1  2\n' \
                   'Valen  0  0  0  0  0  0  0  1  1  1\n'
-elements['Fe'] =  'Iz=  26 Norb= 10 Ion=  0 Config= 3d6_4s2\n' \
+elements['Fe'] =  'Iz=  26 Norb= 10 Ion=  0 Config= 3d6_42\n' \
                   'n      1  2  2  2  3  3  3  3  3  4\n' \
                   'Kappa -1 -1  1 -2 -1  1 -2  2 -3 -1\n' \
                   'Occup  2  2  2  4  2  2  4  4  2  2\n' \
+                  'Valen  0  0  0  0  0  0  0  1  1  1\n'
+elements['Fe_1'] =  'Iz=  26 Norb= 10 Ion=  0 Config= 3d7_4s1\n' \
+                  'n      1  2  2  2  3  3  3  3  3  4\n' \
+                  'Kappa -1 -1  1 -2 -1  1 -2  2 -3 -1\n' \
+                  'Occup  2  2  2  4  2  2  4  4  3  1\n' \
                   'Valen  0  0  0  0  0  0  0  1  1  1\n'
 elements['Co'] =  'Iz=  27 Norb= 10 Ion=  0 Config= 3d7_4s2\n' \
                   'n      1  2  2  2  3  3  3  3  3  4\n' \
@@ -792,7 +797,7 @@ class EMTO(Calculator):
             i = 1
             for alloy in self.alloys:
                 if alloy.id == atom.tag:
-                    kgrn.write('{0:<2}'.format(alloy.symbol))
+                    kgrn.write('{0:<2}'.format(alloy.symbol.split("_")[0]))
                     kgrn.write('{0:7d}{0:3d}'.format(atom.index+1))
                     kgrn.write('{0:3d}'.format(i))
                     nz = elements[alloy.symbol].split(' ')[2]
@@ -824,7 +829,7 @@ class EMTO(Calculator):
         for atom in atoms:
             for alloy in self.alloys:
                 if alloy.id == atom.tag:
-                    kgrn.write(alloy.symbol + '\n')
+                    kgrn.write(alloy.symbol.split("_")[0] + '\n')
                     kgrn.write(elements[alloy.symbol])
 
     #        for alloy in self.alloys:

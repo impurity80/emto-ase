@@ -37,7 +37,7 @@ os.system('rm {0}'.format(result_sum))
 save(result, '{0}'.format(name))
 save(result_sum, '{0}'.format(name))
 
-OPTIONS = np.linspace(0, 0.05, 6)
+OPTIONS = np.linspace(0, 0.04, 5)
 volumes = []
 energies = []
 
@@ -47,14 +47,16 @@ fe = 1.0
 
 for opt in OPTIONS:
 
-    l = 2.8784
+    l = 2.837
     atoms = bulk('Fe', 'fcc', a=l)
+
+    atoms.set_tags([1])
 
     scale = [[np.sqrt(2),0,0],[0,np.sqrt(2),0],[0,0,1]]
     atoms.set_cell(np.dot(scale, atoms.get_cell()), scale_atoms=True)
 
     alloys = []
-    alloys.append(Alloy(1, 'Fe', fe, 1.0))
+    alloys.append(Alloy(1, 'Fe_1', fe, 1.0))
 
     #    dist = [[1+opt, 0, 0], [0, 1+opt, 0], [0, 0, 1/(1+opt)**2]]
     dist = [[1 + opt, 0, 0], [0, 1 - opt, 0], [0, 0, 1 / (1 - opt ** 2)]]
@@ -66,8 +68,8 @@ for opt in OPTIONS:
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
              lat=11,
-             kpts=[13, 13, 13],
-             dmax=2.20,
+             kpts=[27, 27, 27],
+             dmax=1.6,
              amix=0.02
              )
     calc.set_alloys(alloys)

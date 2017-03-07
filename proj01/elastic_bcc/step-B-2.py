@@ -52,7 +52,7 @@ for opt in OPTIONS:
     atoms.set_tags([1])
 
     alloys = []
-    alloys.append(Alloy(1, 'Fe', fe , 1.0))
+    alloys.append(Alloy(1, 'Fe_1', fe , 1.0))
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
              lat=3,
