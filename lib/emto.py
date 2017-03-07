@@ -102,6 +102,11 @@ elements['Ti'] =  'Iz=  22 Norb=  9 Ion=  0 Config= 3d2_4s2\n' \
                   'Kappa -1 -1  1 -2 -1  1 -2  2 -1\n' \
                   'Occup  2  2  2  4  2  2  4  2  2\n' \
                   'Valen  0  0  0  0  0  0  0  1  1\n'
+elements['Ti_0'] =  'Iz=  22 Norb=  9 Ion=  0 Config= 3d2_4s2\n' \
+                  'n      1  2  2  2  3  3  3  3  4  3\n' \
+                  'Kappa -1 -1  1 -2 -1  1 -2  2 -1 -3\n' \
+                  'Occup  2  2  2  4  2  2  4  2  2  0\n' \
+                  'Valen  0  0  0  0  0  0  0  1  1  1\n'
 elements['V'] =   'Iz=  23 Norb=  9 Ion=  0 Config= 3d3_4s2\n' \
                   'n      1  2  2  2  3  3  3  3  4\n' \
                   'Kappa -1 -1  1 -2 -1  1 -2  2 -1\n' \
