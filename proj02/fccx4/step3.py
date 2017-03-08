@@ -65,8 +65,12 @@ for opt in OPTIONS:
     atoms = atoms + Atom('C', position=(0,0,0.5*l), tag=2)
 
     alloys = []
-    alloys.append(Alloy(1, 'Fe', 0.5, 1.0))
-    alloys.append(Alloy(1, 'Fe', 0.5, -1.0))
+    alloys.append(Alloy(1, 'Fe', fe/2, 1.0))
+    alloys.append(Alloy(1, 'Fe', fe/2, -1.0))
+    alloys.append(Alloy(1, 'Cr', cr/2, 1.0))
+    alloys.append(Alloy(1, 'Cr', cr/2, -1.0))
+    alloys.append(Alloy(1, 'Ni', ni/2, 1.0))
+    alloys.append(Alloy(1, 'Ni', ni/2, -1.0))
     alloys.append(Alloy(2, 'C', 0.5, 0.0))
     alloys.append(Alloy(2, 'N', 0.5, 0.0))
 
