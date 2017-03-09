@@ -78,7 +78,8 @@ for opt in OPTIONS:
              lat=1,
              kpts=[13,13,13],
              dos='D',
-             aw = 0.60
+             aw = 0.60,
+             dmax=0.5
              )
     calc.set_alloys(alloys)
 

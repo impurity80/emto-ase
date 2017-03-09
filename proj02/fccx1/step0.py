@@ -19,8 +19,7 @@ rank = comm.Get_rank()
 
 print rank, size
 
-
-name = '2'
+name = '0'
 
 curr_dir = os.getcwd()
 
@@ -59,29 +58,27 @@ for opt in OPTIONS:
               cell=[l,l,l],
               pbc=(1,1,1))
 
-
     atoms.set_tags([1, 1, 1, 1])
-
-    atoms = atoms*(2,2,2)
 
     # view(atoms)
 
-    atoms = atoms + Atom('C', position=(0,0,0.5*l), tag=2)
+#    atoms = atoms + Atom('C', position=(0,0,0.5*l), tag=2)
 
     alloys = []
     alloys.append(Alloy(1, 'Fe', 0.5, 1.0))
     alloys.append(Alloy(1, 'Fe', 0.5, -1.0))
-    alloys.append(Alloy(2, 'N', 1.0, 0.0))
+#    alloys.append(Alloy(2, 'C', 1.0, 0.0))
 
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
              lat=1,
              kpts=[13,13,13],
              dos='D',
-             aw = 0.60,
-             dmax=0.5
+             aw = 0.70
              )
     calc.set_alloys(alloys)
+
+    asdf
 
     atoms.set_calculator(calc)
 

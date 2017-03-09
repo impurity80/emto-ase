@@ -47,6 +47,12 @@ elements = {}
 #for key in element_keys:
 #    elements[key] = None
 
+elements['Va'] =  'Iz=   0 Norb=  0 Ion=  0 Config= 1s0\n' \
+                  'n      1\n' \
+                  'Kappa -1\n' \
+                  'Occup  0\n' \
+                  'Valen  1\n'
+
 elements['B'] =  'Iz=  05 Norb=  3 Ion=  0 Config= 2s2_2p1\n' \
                   'n      1  2  2\n' \
                   'Kappa -1 -1  1\n' \
@@ -474,6 +480,21 @@ class EMTO(Calculator):
         self.kgrn_params['dsws'] = 0.05
         self.kgrn_params['alpcpa'] = 0.6020
 
+    #    config = open('{0}/atom.cfg'.format(os.environ['EMTOLIB']), 'rt')
+
+     #   buffer=config.readlines()
+     #   print(buffer)
+
+    #    buffer = config.readlines()
+    #    buffer[8]
+    #    buffer[9]
+    #    buffer[10]
+    #    buffer[11]
+    #    buffer[12]
+
+    #    for line in config:
+    #        print(line)
+
     def set(self, **kwargs):
         for key in kwargs:
             if key in self.common_params:
@@ -805,7 +826,8 @@ class EMTO(Calculator):
                     kgrn.write('{0:<2}'.format(alloy.symbol.split("_")[0]))
                     kgrn.write('{0:7d}{0:3d}'.format(atom.index+1))
                     kgrn.write('{0:3d}'.format(i))
-                    nz = elements[alloy.symbol].split(' ')[2]
+                #    nz = elements[alloy.symbol].split('=')[2]
+                    nz = elements[alloy.symbol].split('=')[1].split('N')[0]
                     kgrn.write('{0:4d}  '.format(int(nz)))
                     kgrn.write('{:4.3f}'.format(alloy.conc))
                     kgrn.write('  1.000  1.000  1.000  0.0 ')

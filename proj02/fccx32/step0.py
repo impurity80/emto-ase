@@ -74,6 +74,7 @@ for opt in OPTIONS:
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
              lat=1,
              kpts=[6,6,6],
+             dmax=0.5
              )
     calc.set_alloys(alloys)
 
