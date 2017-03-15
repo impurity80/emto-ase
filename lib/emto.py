@@ -30,11 +30,12 @@ def save( filename, arg ):
     f.close()
 
 class Alloy():
-    def __init__(self, id, symbol, conc, split):
+    def __init__(self, id, symbol, conc, split, aw=0.7):
         self.id = id
         self.symbol = symbol
         self.conc = conc
         self.split = split
+        self.aw = aw
 
 #element_keys = [
 #    'Al', 'Si', 'P', 'S', # 2d metal
@@ -368,7 +369,22 @@ kgrn_keys = [
    # 'sws',
     'nsws',
     'dsws',
-    'alpcpa'
+    'alpcpa',
+    'iex',
+    'np',
+    'nes',
+    'niter',
+    'iwat',
+    'nprna',
+    'vmix',
+    'rwat',
+    'rmax',
+    'dx',
+    'dr1',
+    'test',
+    'teste',
+    'testy',
+    'testv',
 ]
 
 class EMTO(Calculator):
@@ -479,6 +495,22 @@ class EMTO(Calculator):
         self.kgrn_params['nsws'] = 1
         self.kgrn_params['dsws'] = 0.05
         self.kgrn_params['alpcpa'] = 0.6020
+
+        self.kgrn_params['iex'] = 4
+        self.kgrn_params['np'] = 251
+        self.kgrn_params['nes'] = 15
+        self.kgrn_params['niter'] = 100
+        self.kgrn_params['iwat'] = 0
+        self.kgrn_params['nprna'] = 0
+        self.kgrn_params['vmix'] = 0.30
+        self.kgrn_params['rwat'] = 3.5
+        self.kgrn_params['rmax'] = 20
+        self.kgrn_params['dx'] = 0.03
+        self.kgrn_params['dr1'] = 0.002
+        self.kgrn_params['test'] = '1.00e-12'
+        self.kgrn_params['teste'] = '1.00e-12'
+        self.kgrn_params['testy'] = '1.00e-12'
+        self.kgrn_params['testv'] = '1.00e-12'
 
     #    config = open('{0}/atom.cfg'.format(os.environ['EMTOLIB']), 'rt')
 
@@ -608,11 +640,15 @@ class EMTO(Calculator):
         bmdl.write('C.......={:10.7f}\n'.format(c / a))
 
         if self.common_params['iprim']==0:
-
-            if len(atoms) == 1 : #primitive
-                l = cell[0][1]*2
-            else:
+            if cell[0][0] > 1e-6:
                 l = cell[0][0]
+            else:
+                l = cell[0][1]*2
+
+        #    if len(atoms) == 1 : #primitive
+        #        l = cell[0][1]*2
+        #    else:
+        #        l = cell[0][0]
 
        #     if self.common_params['lat']==2: # fcc
        #         l = cell[1][0]*2
@@ -633,9 +669,9 @@ class EMTO(Calculator):
             bmdl.write('BSZ.....={:10.7f}\n'.format(cell[2][2]))
 
             for atom in atoms:
-                bmdl.write('QX.......={:10.7f} '.format(atom.position[0]/a))
-                bmdl.write('QY......={:10.7f} '.format(atom.position[1]/a))
-                bmdl.write('QZ......={:10.7f}\n'.format(atom.position[2]/a))
+                bmdl.write('QX.......={:10.7f} '.format(atom.position[0]/l))
+                bmdl.write('QY......={:10.7f} '.format(atom.position[1]/l))
+                bmdl.write('QZ......={:10.7f}\n'.format(atom.position[2]/l))
         else:
             bmdl.write('ALPHA....=      90.0 BETA....=      90.0 GAMMA...=      90.0\n')
             bmdl.write('QX(1)....=       0.0 QY(1)...=       0.0 QZ(1)...=       0.0\n')
@@ -677,11 +713,11 @@ class EMTO(Calculator):
 
         if self.common_params['iprim']==0:
 
-            if len(atoms) == 1:  # primitive
-                l = cell[0][1] * 2
-            else:
-                l = cell[0][0]
-
+            if self.common_params['iprim'] == 0:
+                if cell[0][0] > 1e-6:
+                    l = cell[0][0]
+                else:
+                    l = cell[0][1] * 2
                 #     if self.common_params['lat']==2: # fcc
                 #         l = cell[1][0]*2
                 #     elif self.common_params['lat']==3: # bcc
@@ -701,13 +737,21 @@ class EMTO(Calculator):
             kstr.write('BSZ.....={:10.7f}\n'.format(cell[2][2]))
 
             for atom in atoms:
-                kstr.write('QX.......={:10.7f} '.format(atom.position[0]/a))
-                kstr.write('QY......={:10.7f} '.format(atom.position[1]/a))
-                kstr.write('QZ......={:10.7f}\n'.format(atom.position[2]/a))
+                kstr.write('QX.......={:10.7f} '.format(atom.position[0]/l))
+                kstr.write('QY......={:10.7f} '.format(atom.position[1]/l))
+                kstr.write('QZ......={:10.7f}\n'.format(atom.position[2]/l))
         else:
         #    kstr.write('A........=     1.000 B.......=     1.000 C.......=     1.000\n')
             kstr.write('ALPHA....=      90.0 BETA....=      90.0 GAMMA...=      90.0\n')
             kstr.write('QX(1)....=       0.0 QY(1)...=       0.0 QZ(1)...=       0.0\n')
+
+    #    for atom in atoms:
+    #        i = 1
+    #        if atom.symbol == 'C' :
+    #            aw = 0.4
+    #        else:
+    #            aw = 0.6
+    #        kstr.write('a/w(IQ)..= {0:5.2f}{0:5.2f}{0:5.2f}{0:5.2f}\n'.format(aw))
 
         for atom in atoms:
             kstr.write('a/w(IQ)..= {0:5.2f}{0:5.2f}{0:5.2f}{0:5.2f}\n'.format(self.kstr_params['aw']))
@@ -848,10 +892,26 @@ class EMTO(Calculator):
     #    kgrn.write('Cu      1  1  1  26  1.000  1.000  1.000  1.000  0.0  0.0  N\n')
         kgrn.write('Atom:  4 lines + NT*NTA*6 lines\n')
 
-        kgrn.write('IEX...=  4 NP..= 251 NES..= 15 NITER=100 IWAT.=  0 NPRNA=  0\n')
-        kgrn.write('VMIX.....=  0.300000 RWAT....=  3.500000 RMAX....= 20.000000\n')
-        kgrn.write('DX.......=  0.030000 DR1.....=  0.002000 TEST....=  1.00E-12\n')
-        kgrn.write('TESTE....=  1.00E-12 TESTY...=  1.00E-12 TESTV...=  1.00E-12\n')
+        kgrn.write('IEX...={:3d} '.format(self.kgrn_params['iex']))
+        kgrn.write('NP..={:4d} '.format(self.kgrn_params['np']))
+        kgrn.write('NES..={:3d} '.format(self.kgrn_params['nes']))
+        kgrn.write('NITER={:3d} '.format(self.kgrn_params['niter']))
+        kgrn.write('IWAT.={:3d} '.format(self.kgrn_params['iwat']))
+        kgrn.write('NPRNA={:3d}\n'.format(self.kgrn_params['nprna']))
+
+        kgrn.write('VMIX.....={:10.6f} '.format(self.kgrn_params['vmix']))
+        kgrn.write('RWAT....={:10.6f} '.format(self.kgrn_params['rwat']))
+        kgrn.write('RMAX....={:10.6f}\n'.format(self.kgrn_params['rmax']))
+
+        kgrn.write('DX.......={:10.6f} '.format(self.kgrn_params['dx']))
+        kgrn.write('DR1.....={:10.6f} '.format(self.kgrn_params['dr1']))
+        kgrn.write('TEST....={:>10}\n'.format(self.kgrn_params['test']))
+
+
+        kgrn.write('TESTE....={:>10} '.format(self.kgrn_params['teste']))
+        kgrn.write('TESTY...={:>10} '.format(self.kgrn_params['testy']))
+        kgrn.write('TESTV...={:>10}\n'.format(self.kgrn_params['testv']))
+
 
         for atom in atoms:
             for alloy in self.alloys:

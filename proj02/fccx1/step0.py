@@ -37,48 +37,41 @@ os.system('rm {0}'.format(result_sum))
 save(result, '{0}'.format(name))
 save(result_sum, '{0}'.format(name))
 
-OPTIONS = np.linspace(0.98, 1.02, 9)
+# OPTIONS = np.linspace(0.98, 1.02, 9)
+OPTIONS = range(0,10)
 volumes = []
 energies = []
 
+print OPTIONS
+
 cr = 0.15
 ni = 0.15
-fe = 1.0-cr-ni
+fe = 1.0-cr
 
 for opt in OPTIONS:
 
-    l = 3.602 * opt
+    l = 3.602
+    atoms = bulk('Fe', 'fcc', a=l)
+    atoms.set_tags([1])
 
-    atoms = Atoms('Fe4',
-              scaled_positions=[
-                                (0, 0, 0),
-                                (0.5, 0.5, 0),
-                                (0.5, 0, 0.5),
-                                (0, 0.5, 0.5)],
-              cell=[l,l,l],
-              pbc=(1,1,1))
-
-    atoms.set_tags([1, 1, 1, 1])
-
-    # view(atoms)
-
-#    atoms = atoms + Atom('C', position=(0,0,0.5*l), tag=2)
+#    atoms = atoms + Atom('C', position=(0.5*l,0.5*l,0.5*l), tag=2)
 
     alloys = []
-    alloys.append(Alloy(1, 'Fe', 0.5, 1.0))
-    alloys.append(Alloy(1, 'Fe', 0.5, -1.0))
-#    alloys.append(Alloy(2, 'C', 1.0, 0.0))
+    alloys.append(Alloy(1, 'Fe', fe/2, 1.0))
+    alloys.append(Alloy(1, 'Fe', fe/2, -1.0))
+    alloys.append(Alloy(1, 'Cr', cr/2, 1.0))
+    alloys.append(Alloy(1, 'Cr', cr/2, -1.0))
 
     calc = EMTO()
-    calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
-             lat=1,
-             kpts=[13,13,13],
-             dos='D',
-             aw = 0.70
+    calc.set(dir='{0}/calc/{1}/opt-{2}'.format(temp_dir, name, opt),
+             lat=2,
+             kpts=[13, 13, 13],
+          #   dos='D',
+          #   aw = 0.70,
+          #   dmax = 1.50,
+             iex = opt,
              )
     calc.set_alloys(alloys)
-
-    asdf
 
     atoms.set_calculator(calc)
 

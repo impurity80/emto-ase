@@ -71,7 +71,7 @@ for opt in OPTIONS:
     alloys.append(Alloy(1, 'Cr', cr/2, -1.0))
     alloys.append(Alloy(1, 'Ni', ni/2, 1.0))
     alloys.append(Alloy(1, 'Ni', ni/2, -1.0))
-    alloys.append(Alloy(2, 'C', 0.5, 0.0))
+    alloys.append(Alloy(2, 'N', 0.5, 0.0))
     alloys.append(Alloy(2, 'Va', 0.5, 0.0))
 
     calc = EMTO()
@@ -79,8 +79,8 @@ for opt in OPTIONS:
              lat=1,
              kpts=[13,13,13],
              dos='D',
-             aw = 0.60,
-             dmax=1.0
+             dmax=1.0,
+             aw = 0.6
              )
     calc.set_alloys(alloys)
 
