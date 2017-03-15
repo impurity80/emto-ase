@@ -496,7 +496,7 @@ class EMTO(Calculator):
         self.kgrn_params['dsws'] = 0.05
         self.kgrn_params['alpcpa'] = 0.6020
 
-        self.kgrn_params['iex'] = 4
+        self.kgrn_params['iex'] = 9
         self.kgrn_params['np'] = 251
         self.kgrn_params['nes'] = 15
         self.kgrn_params['niter'] = 100
