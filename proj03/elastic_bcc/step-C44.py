@@ -19,7 +19,7 @@ rank = comm.Get_rank()
 
 print rank, size
 
-name = '0'
+name = 'C44'
 
 curr_dir = os.getcwd()
 
@@ -37,41 +37,40 @@ os.system('rm {0}'.format(result_sum))
 save(result, '{0}'.format(name))
 save(result_sum, '{0}'.format(name))
 
-OPTIONS = np.linspace(0.98, 1.02, 9)
-
+OPTIONS = np.linspace(0, 0.04, 5)
 volumes = []
 energies = []
 
-print OPTIONS
-
 cr = 0.15
 ni = 0.15
-fe = 1.0-cr
+fe = 1.0
 
 for opt in OPTIONS:
 
-    a0 = 3.59 * opt / np.sqrt(2)
-    #   c0 = np.sqrt(8 / 3.0) * a0
-    c0 = a0 * 1.585
-    atoms = bulk('Fe', 'hcp', a=a0, c=c0)
-    atoms.set_tags([1, 1])
+    l = 2.837
+    atoms = bulk('Fe', 'fcc', a=l)
 
-    #    atoms = atoms + Atom('C', position=(0.5*l,0.5*l,0.5*l), tag=2)
+    atoms.set_tags([1])
+
+    scale = [[np.sqrt(2),0,0],[0,np.sqrt(2),0],[0,0,1]]
+    atoms.set_cell(np.dot(scale, atoms.get_cell()), scale_atoms=True)
+
+    alloys = []
+    alloys.append(Alloy(1, 'Fe_1', fe, 1.0))
+
+    #    dist = [[1+opt, 0, 0], [0, 1+opt, 0], [0, 0, 1/(1+opt)**2]]
+    dist = [[1 + opt, 0, 0], [0, 1 - opt, 0], [0, 0, 1 / (1 - opt ** 2)]]
+
+    atoms.set_cell(np.dot( atoms.get_cell(), dist), scale_atoms=True)
 
     print atoms.get_cell()
 
-    alloys = []
-    alloys.append(Alloy(1, 'Fe', fe, 0.0))
-    alloys.append(Alloy(1, 'Cr', cr, 0.0))
-
     calc = EMTO()
-    calc.set(dir='{0}/calc/{1}/opt-{2}'.format(temp_dir, name, opt),
-             lat=4,
-             kpts=[13, 13, 13],
-          #   dos='D',
-          #   aw = 0.70,
-          #   dmax = 1.50,
-             sofc='Y'
+    calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
+             lat=11,
+             kpts=[27, 27, 27],
+             dmax=1.6,
+             amix=0.02
              )
     calc.set_alloys(alloys)
 
@@ -89,11 +88,26 @@ for opt in OPTIONS:
 
 print volumes, energies
 
-eos = EquationOfState(volumes, energies)
-v0, e0, B = eos.fit()
-eos.plot('{0}/graph/{1}.png'.format(temp_dir, name))
 
-save(result, '{0} {1} {2} {3}'.format(v0, e0, B/kJ*1.0e24, (4.0 * v0) ** (1.0 / 3.0)))
+OPTIONS = (-1.0*OPTIONS[::-1]).tolist() + OPTIONS.tolist()
+energies = (energies[::-1]) + energies
+
+
+coefs = poly.polyfit(OPTIONS, energies, 3)
+
+C44 = coefs[2]/volumes[0]/kJ*1.0e24
+
+print C44
+
+x_new = np.linspace(OPTIONS[0]-0.01, OPTIONS[-1]+0.01, num=len(OPTIONS)*10)
+
+ffit = poly.polyval(x_new, coefs)
+
+plt.scatter(OPTIONS, energies)
+plt.plot(x_new, ffit)
+plt.savefig('{0}.png'.format(name))
+
+os.system('mv {0}.png {1}/graph'.format(name, temp_dir))
 
 save(result, OPTIONS)
 save(result, volumes)
@@ -101,7 +115,10 @@ save(result, energies)
 
 save(result, '------------------------')
 
-save(result_sum, '{0}, {1}, {2}, {3}, {4}, {5}'.format(name, e0, v0, B, volumes, energies))
+save(result_sum, '{0}, {1}, {2}, {3}'.format(name, C44, volumes, energies))
+
+
+
 
 
 

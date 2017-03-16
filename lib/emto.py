@@ -630,20 +630,30 @@ class EMTO(Calculator):
         bmdl.write('NQR2..={:2d}\n'.format(self.common_params['nqr2']))
 
         cell = atoms.get_cell()
+        buffer = np.array([[max(j,0) for j in i] for i in cell])
+        lattice = buffer[0] + buffer[1] + buffer[2]
 
-        a = np.linalg.norm(cell[0])
-        b = np.linalg.norm(cell[1])
-        c = np.linalg.norm(cell[2])
+        if self.common_params['lat']==4: # hcp
+            a = lattice[0]
+            b = lattice[1]/(sqrt(3)/2)
+            c = lattice[2]
+        else:
+            a = lattice[0]
+            b = lattice[1]
+            c = lattice[2]
+    #    a = np.linalg.norm(cell.transpose()[0])
+    #    b = np.linalg.norm(cell.transpose()[1])
+    #    c = np.linalg.norm(cell.transpose()[2])
 
         bmdl.write('A........={:10.7f} '.format(a / a))
         bmdl.write('B.......={:10.7f} '.format(b / a))
         bmdl.write('C.......={:10.7f}\n'.format(c / a))
 
         if self.common_params['iprim']==0:
-            if cell[0][0] > 1e-6:
-                l = cell[0][0]
-            else:
-                l = cell[0][1]*2
+         #   if cell[0][0] > 1e-6:
+         #       l = cell[0][0]
+         #   else:
+         #       l = cell[0][1]*2
 
         #    if len(atoms) == 1 : #primitive
         #        l = cell[0][1]*2
@@ -657,7 +667,7 @@ class EMTO(Calculator):
        #     else:
        #         l = cell[0][0]
 
-            cell = atoms.get_cell().copy()/l
+            cell = atoms.get_cell().copy()/a
             bmdl.write('BSX......={:10.7f} '.format(cell[0][0]))
             bmdl.write('BSY.....={:10.7f} '.format(cell[0][1]))
             bmdl.write('BSZ.....={:10.7f}\n'.format(cell[0][2]))
@@ -669,9 +679,9 @@ class EMTO(Calculator):
             bmdl.write('BSZ.....={:10.7f}\n'.format(cell[2][2]))
 
             for atom in atoms:
-                bmdl.write('QX.......={:10.7f} '.format(atom.position[0]/l))
-                bmdl.write('QY......={:10.7f} '.format(atom.position[1]/l))
-                bmdl.write('QZ......={:10.7f}\n'.format(atom.position[2]/l))
+                bmdl.write('QX.......={:10.7f} '.format(atom.position[0]/a))
+                bmdl.write('QY......={:10.7f} '.format(atom.position[1]/a))
+                bmdl.write('QZ......={:10.7f}\n'.format(atom.position[2]/a))
         else:
             bmdl.write('ALPHA....=      90.0 BETA....=      90.0 GAMMA...=      90.0\n')
             bmdl.write('QX(1)....=       0.0 QY(1)...=       0.0 QZ(1)...=       0.0\n')
@@ -702,30 +712,44 @@ class EMTO(Calculator):
         kstr.write('NQR2..={:2d}\n'.format(self.common_params['nqr2']))
 
         cell = atoms.get_cell()
+        buffer = np.array([[max(j,0) for j in i] for i in cell])
+        lattice = buffer[0] + buffer[1] + buffer[2]
 
-        a = np.linalg.norm(cell[0])
-        b = np.linalg.norm(cell[1])
-        c = np.linalg.norm(cell[2])
+        if self.common_params['lat'] == 4:  # hcp
+            a = lattice[0]
+            b = lattice[1]/(sqrt(3)/2)
+            c = lattice[2]
+        else:
+            a = lattice[0]
+            b = lattice[1]
+            c = lattice[2]
+            #    a = np.linalg.norm(cell.transpose()[0])
+            #    b = np.linalg.norm(cell.transpose()[1])
+            #    c = np.linalg.norm(cell.transpose()[2])
 
         kstr.write('A........={:10.7f} '.format(a / a))
         kstr.write('B.......={:10.7f} '.format(b / a))
         kstr.write('C.......={:10.7f}\n'.format(c / a))
 
-        if self.common_params['iprim']==0:
+        if self.common_params['iprim'] == 0:
+            #   if cell[0][0] > 1e-6:
+            #       l = cell[0][0]
+            #   else:
+            #       l = cell[0][1]*2
 
-            if self.common_params['iprim'] == 0:
-                if cell[0][0] > 1e-6:
-                    l = cell[0][0]
-                else:
-                    l = cell[0][1] * 2
-                #     if self.common_params['lat']==2: # fcc
-                #         l = cell[1][0]*2
-                #     elif self.common_params['lat']==3: # bcc
-                #         l = cell[0][0]*2
-                #     else:
-                #         l = cell[0][0]
+            #    if len(atoms) == 1 : #primitive
+            #        l = cell[0][1]*2
+            #    else:
+            #        l = cell[0][0]
 
-            cell = atoms.get_cell().copy() / l
+            #     if self.common_params['lat']==2: # fcc
+            #         l = cell[1][0]*2
+            #     elif self.common_params['lat']==3: # bcc
+            #         l = cell[0][0]*2
+            #     else:
+            #         l = cell[0][0]
+
+            cell = atoms.get_cell().copy() / a
             kstr.write('BSX......={:10.7f} '.format(cell[0][0]))
             kstr.write('BSY.....={:10.7f} '.format(cell[0][1]))
             kstr.write('BSZ.....={:10.7f}\n'.format(cell[0][2]))
@@ -737,9 +761,9 @@ class EMTO(Calculator):
             kstr.write('BSZ.....={:10.7f}\n'.format(cell[2][2]))
 
             for atom in atoms:
-                kstr.write('QX.......={:10.7f} '.format(atom.position[0]/l))
-                kstr.write('QY......={:10.7f} '.format(atom.position[1]/l))
-                kstr.write('QZ......={:10.7f}\n'.format(atom.position[2]/l))
+                kstr.write('QX.......={:10.7f} '.format(atom.position[0] / a))
+                kstr.write('QY......={:10.7f} '.format(atom.position[1] / a))
+                kstr.write('QZ......={:10.7f}\n'.format(atom.position[2] / a))
         else:
         #    kstr.write('A........=     1.000 B.......=     1.000 C.......=     1.000\n')
             kstr.write('ALPHA....=      90.0 BETA....=      90.0 GAMMA...=      90.0\n')
