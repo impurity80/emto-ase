@@ -75,7 +75,6 @@ for opt in OPTIONS:
              kpts=[13,13,13],
              dos='D',
              aw = 0.60,
-             dmax=1.0
              )
     calc.set_alloys(alloys)
 

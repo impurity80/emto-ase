@@ -496,7 +496,7 @@ class EMTO(Calculator):
         self.kgrn_params['dsws'] = 0.05
         self.kgrn_params['alpcpa'] = 0.6020
 
-        self.kgrn_params['iex'] = 9
+        self.kgrn_params['iex'] = 4
         self.kgrn_params['np'] = 251
         self.kgrn_params['nes'] = 15
         self.kgrn_params['niter'] = 100
@@ -659,13 +659,13 @@ class EMTO(Calculator):
 
             cell = atoms.get_cell().copy()/l
             bmdl.write('BSX......={:10.7f} '.format(cell[0][0]))
-            bmdl.write('BSY.....={:10.7f} '.format(cell[1][0]))
-            bmdl.write('BSZ.....={:10.7f}\n'.format(cell[2][0]))
-            bmdl.write('BSX......={:10.7f} '.format(cell[0][1]))
+            bmdl.write('BSY.....={:10.7f} '.format(cell[0][1]))
+            bmdl.write('BSZ.....={:10.7f}\n'.format(cell[0][2]))
+            bmdl.write('BSX......={:10.7f} '.format(cell[1][0]))
             bmdl.write('BSY.....={:10.7f} '.format(cell[1][1]))
-            bmdl.write('BSZ.....={:10.7f}\n'.format(cell[2][1]))
-            bmdl.write('BSX......={:10.7f} '.format(cell[0][2]))
-            bmdl.write('BSY.....={:10.7f} '.format(cell[1][2]))
+            bmdl.write('BSZ.....={:10.7f}\n'.format(cell[1][2]))
+            bmdl.write('BSX......={:10.7f} '.format(cell[2][0]))
+            bmdl.write('BSY.....={:10.7f} '.format(cell[2][1]))
             bmdl.write('BSZ.....={:10.7f}\n'.format(cell[2][2]))
 
             for atom in atoms:
@@ -727,13 +727,13 @@ class EMTO(Calculator):
 
             cell = atoms.get_cell().copy() / l
             kstr.write('BSX......={:10.7f} '.format(cell[0][0]))
-            kstr.write('BSY.....={:10.7f} '.format(cell[1][0]))
-            kstr.write('BSZ.....={:10.7f}\n'.format(cell[2][0]))
-            kstr.write('BSX......={:10.7f} '.format(cell[0][1]))
+            kstr.write('BSY.....={:10.7f} '.format(cell[0][1]))
+            kstr.write('BSZ.....={:10.7f}\n'.format(cell[0][2]))
+            kstr.write('BSX......={:10.7f} '.format(cell[1][0]))
             kstr.write('BSY.....={:10.7f} '.format(cell[1][1]))
-            kstr.write('BSZ.....={:10.7f}\n'.format(cell[2][1]))
-            kstr.write('BSX......={:10.7f} '.format(cell[0][2]))
-            kstr.write('BSY.....={:10.7f} '.format(cell[1][2]))
+            kstr.write('BSZ.....={:10.7f}\n'.format(cell[1][2]))
+            kstr.write('BSX......={:10.7f} '.format(cell[2][0]))
+            kstr.write('BSY.....={:10.7f} '.format(cell[2][1]))
             kstr.write('BSZ.....={:10.7f}\n'.format(cell[2][2]))
 
             for atom in atoms:
