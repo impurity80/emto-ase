@@ -19,7 +19,7 @@ rank = comm.Get_rank()
 
 print rank, size
 
-name = 'C44'
+name = 'C66'
 
 curr_dir = os.getcwd()
 
@@ -37,42 +37,46 @@ os.system('rm {0}'.format(result_sum))
 save(result, '{0}'.format(name))
 save(result_sum, '{0}'.format(name))
 
-OPTIONS = np.linspace(0.00, 0.04, 5)
+OPTIONS = np.linspace(0, 0.05, 6)
+
 volumes = []
 energies = []
 
+print OPTIONS
+
 cr = 0.15
-ni = 0.15
-fe = 1.0
+fe = 1.0-cr
 
 for opt in OPTIONS:
+    a0 = 3.59 / np.sqrt(2)
+    c0 = np.sqrt(8 / 3.0) * a0
 
-    l = 2.837
-    atoms = bulk('Fe', 'fcc', a=l)
+    atoms = Atoms('Fe2',
+              scaled_positions=[(0, 0, 0),
+                                (0, 1./3., 1./2.)],
+              cell=[a0,a0*sqrt(3),c0],
+              pbc=(1,1,1))
 
-    atoms.set_tags([1])
+    scale = [[1,0,0],[0,(1-opt)/(1+opt),0],[0,0,1/(1+opt)/(1-opt**2)]]
+    atoms.set_cell(np.dot( atoms.get_cell(), scale), scale_atoms=True)
 
-    scale = [[np.sqrt(2),0,0],[0,np.sqrt(2),0],[0,0,1]]
-    atoms.set_cell(np.dot(atoms.get_cell(), scale), scale_atoms=True)
+    print atoms.get_cell()
+
+    atoms.set_tags([1, 1])
 
     alloys = []
-    alloys.append(Alloy(1, 'Fe_1', fe, 1.0))
-
-    #    dist = [[1+opt, 0, 0], [0, 1+opt, 0], [0, 0, 1/(1+opt)**2]]
-    dist = [[1 + opt, 0, 0], [0, 1 - opt, 0], [0, 0, 1 / (1 - opt ** 2)]]
-
-    print atoms.get_cell()
-
-    atoms.set_cell(np.dot( atoms.get_cell(), dist), scale_atoms=True)
-
-    print atoms.get_cell()
+    alloys.append(Alloy(1, 'Fe', fe, 0.0))
+    alloys.append(Alloy(1, 'Cr', cr, 0.0))
 
     calc = EMTO()
-    calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
-             lat=11,
-             kpts=[27, 27, 27],
-             dmax=1.6,
-             amix=0.02
+    calc.set(dir='{0}/calc/{1}/opt-{2}'.format(temp_dir, name, opt),
+             lat=9,
+             kpts=[13, 13, 13],
+             dmax=2.52,
+          #   dos='D',
+          #   aw = 0.70,
+          #   dmax = 1.50,
+             sofc='Y'
              )
     calc.set_alloys(alloys)
 
@@ -90,16 +94,13 @@ for opt in OPTIONS:
 
 print volumes, energies
 
-
-OPTIONS = (-1.0*OPTIONS[::-1]).tolist() + OPTIONS.tolist()
-energies = (energies[::-1]) + energies
-
-
 coefs = poly.polyfit(OPTIONS, energies, 3)
 
-C44 = coefs[2]/volumes[0]/kJ*1.0e24
+C = coefs[2]/volumes[0]/kJ*1.0e24
 
-print C44
+print C
+
+save(result, C)
 
 x_new = np.linspace(OPTIONS[0]-0.01, OPTIONS[-1]+0.01, num=len(OPTIONS)*10)
 
@@ -117,12 +118,7 @@ save(result, energies)
 
 save(result, '------------------------')
 
-save(result_sum, '{0}, {1}, {2}, {3}'.format(name, C44, volumes, energies))
-
-
-
-
-
+save(result_sum, '{0}, {1}, {2}, {3}'.format(name, C, volumes, energies))
 
 
 

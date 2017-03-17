@@ -931,11 +931,9 @@ class EMTO(Calculator):
         kgrn.write('DR1.....={:10.6f} '.format(self.kgrn_params['dr1']))
         kgrn.write('TEST....={:>10}\n'.format(self.kgrn_params['test']))
 
-
         kgrn.write('TESTE....={:>10} '.format(self.kgrn_params['teste']))
         kgrn.write('TESTY...={:>10} '.format(self.kgrn_params['testy']))
         kgrn.write('TESTV...={:>10}\n'.format(self.kgrn_params['testv']))
-
 
         for atom in atoms:
             for alloy in self.alloys:

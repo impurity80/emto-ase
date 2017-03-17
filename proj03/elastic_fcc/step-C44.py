@@ -51,7 +51,7 @@ for opt in OPTIONS:
     atoms = bulk('Fe', 'bcc', a=l)
 
     scale = [[1,0,0],[0,1,0],[0,0,np.sqrt(2)]]
-    atoms.set_cell(np.dot(scale, atoms.get_cell()), scale_atoms=True)
+    atoms.set_cell(np.dot( atoms.get_cell(), scale), scale_atoms=True)
 
     atoms.set_tags([1])
 
