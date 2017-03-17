@@ -19,7 +19,7 @@ rank = comm.Get_rank()
 
 print rank, size
 
-name = 'C66'
+name = 'C-2'
 
 curr_dir = os.getcwd()
 
@@ -37,7 +37,7 @@ os.system('rm {0}'.format(result_sum))
 save(result, '{0}'.format(name))
 save(result_sum, '{0}'.format(name))
 
-OPTIONS = np.linspace(0, 0.05, 6)
+OPTIONS = np.linspace(-0.05, 0.05, 11)
 
 volumes = []
 energies = []
@@ -57,7 +57,7 @@ for opt in OPTIONS:
               cell=[a0,a0*sqrt(3),c0],
               pbc=(1,1,1))
 
-    dist = [[1,0,0],[0,(1-opt)/(1+opt),0],[0,0,1/(1+opt)/(1-opt**2)]]
+    dist = [[1+opt, 0, 0], [0, 1+opt, 0], [0, 0, 1/(1+opt)**2]]
     atoms.set_cell(np.dot( atoms.get_cell(), dist), scale_atoms=True)
 
     print atoms.get_cell()
@@ -74,8 +74,7 @@ for opt in OPTIONS:
              kpts=[13, 13, 13],
              dmax=2.52,
           #   dos='D',
-          #   aw = 0.70,
-          #   dmax = 1.50,
+             aw = 0.60,
              sofc='Y'
              )
     calc.set_alloys(alloys)
@@ -111,6 +110,7 @@ plt.plot(x_new, ffit)
 plt.savefig('{0}.png'.format(name))
 
 os.system('mv {0}.png {1}/graph'.format(name, temp_dir))
+
 
 save(result, OPTIONS)
 save(result, volumes)
