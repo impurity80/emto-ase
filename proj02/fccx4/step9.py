@@ -19,7 +19,7 @@ rank = comm.Get_rank()
 
 print rank, size
 
-name = '4'
+name = '9'
 
 curr_dir = os.getcwd()
 
@@ -41,9 +41,9 @@ OPTIONS = np.linspace(0.98, 1.02, 9)
 volumes = []
 energies = []
 
-cr = 0.15
-ni = 0.15
-fe = 1.0-cr-ni
+cr = 0.18
+mn = 0.10
+fe = 1.0-cr-mn
 
 for opt in OPTIONS:
 
@@ -69,10 +69,11 @@ for opt in OPTIONS:
     alloys.append(Alloy(1, 'Fe', fe/2, -1.0))
     alloys.append(Alloy(1, 'Cr', cr/2, 1.0))
     alloys.append(Alloy(1, 'Cr', cr/2, -1.0))
-    alloys.append(Alloy(1, 'Ni', ni/2, 1.0))
-    alloys.append(Alloy(1, 'Ni', ni/2, -1.0))
-    alloys.append(Alloy(2, 'C', 0.7, 0.0))
-    alloys.append(Alloy(2, 'Va', 0.3, 0.0))
+    alloys.append(Alloy(1, 'Mn', mn/2, 1.0))
+    alloys.append(Alloy(1, 'Mn', mn/2, -1.0))
+    alloys.append(Alloy(2, 'C', 0.05, 0.0))
+    alloys.append(Alloy(2, 'N', 0.05, 0.0))
+    alloys.append(Alloy(2, 'Va', 0.9, 0.0))
 
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
