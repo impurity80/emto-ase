@@ -37,7 +37,7 @@ os.system('rm {0}'.format(result_sum))
 save(result, '{0}'.format(name))
 save(result_sum, '{0}'.format(name))
 
-OPTIONS = np.linspace(0.01, 0.05, 1)
+OPTIONS = np.linspace(0.00, 0.05, 6)
 
 volumes = []
 energies = []
@@ -60,11 +60,11 @@ for opt in OPTIONS:
                   cell=[[a0, 0, 0], [0, a0*sqrt(3), 0], [0, 0, c0]],
                   pbc=(1, 1, 1))
 
-    dist = [[1+opt*opt, 0, 0], [0, sqrt(1+opt*opt)/(1-opt*opt), 0], [2*opt, 0, 1/(1-opt*opt)]]
+    dist = [[1+opt*opt, 0, 0], [0, 1/(1+opt*opt)/(1-opt*opt), 0], [2*opt, 0, 1-opt*opt]]
     atoms.set_cell(np.dot(atoms.get_cell(), dist), scale_atoms=True)
 
-    print atoms.get_cell()
-    print atoms.positions
+  #  print atoms.get_cell()
+  #  print atoms.positions
 
     atoms.set_tags([1, 1, 1, 1])
 
@@ -75,7 +75,7 @@ for opt in OPTIONS:
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
              lat=12,
-             kpts=[13, 13, 13],
+             kpts=[12, 12, 12], # simple monoclinic should be even number
              dmax=2.52
              #   dos='D',
              #   aw = 0.70,
@@ -89,6 +89,7 @@ for opt in OPTIONS:
     nm_e = 0
     nm_e = atoms.get_potential_energy() / atoms.get_number_of_atoms()
     nm_v = atoms.get_volume() / atoms.get_number_of_atoms()
+
 
     if nm_e < -0.001:
         volumes.append(nm_v)
