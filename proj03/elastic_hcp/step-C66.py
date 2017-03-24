@@ -60,7 +60,7 @@ for opt in OPTIONS:
 
     #  atoms.set_cell([[1/2, sqrt(3)/2, 0],[-1/2, sqrt(3)/2, 0] ,[0,0,1]])
 
-    scale = [[a0*(1-opt)/(1+opt), 0, 0], [0, a0*(1-opt)/(1+opt), 0], [0, 0, 1/(1+opt)/(1-opt*opt)*c0]]
+    scale = [[a0*(1+opt), 0, 0], [0, a0*(1-opt), 0], [0, 0, 1/(1-opt*opt)*c0]]
     atoms.set_cell(np.dot(atoms.get_cell(), scale), scale_atoms=True)
 
     print atoms.get_cell()

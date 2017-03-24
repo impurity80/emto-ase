@@ -77,8 +77,7 @@ for opt in OPTIONS:
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
              lat=9,
              kpts=[13, 13, 13],
-             dmax=2.52,
-             iprim=1
+             dmax=2.52
           #   dos='D',
           #   aw = 0.70,
           #   dmax = 1.50,

@@ -50,7 +50,7 @@ fe = 1.0-cr
 
 for opt in OPTIONS:
 
-    a0 = 3.52 * opt / np.sqrt(2)
+    a0 = 3.59 * opt / np.sqrt(2)
     #   c0 = np.sqrt(8 / 3.0) * a0
     c0 = a0 * 1.585
     atoms = bulk('Fe', 'hcp', a=a0, c=c0)
@@ -58,6 +58,7 @@ for opt in OPTIONS:
 
     #    atoms = atoms + Atom('C', position=(0.5*l,0.5*l,0.5*l), tag=2)
 
+    print atoms.get_volume()
     print atoms.get_cell()
 
     alloys = []

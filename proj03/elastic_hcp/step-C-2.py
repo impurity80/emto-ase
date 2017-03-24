@@ -48,19 +48,23 @@ cr = 0.15
 fe = 1.0-cr
 
 for opt in OPTIONS:
-    a0 = 3.59 / np.sqrt(2) / np.power(2, 1./3.)
-    c0 = np.sqrt(8 / 3.0) * a0
+    a0 = 3.59 / np.sqrt(2)
+    #    c0 = np.sqrt(8 / 3.0) * a0
+    c0 = 1.585 * a0
 
     atoms = Atoms('Fe2',
-              scaled_positions=[(0, 0, 0),
-                                (0, 1./3., 1./2.)],
-              cell=[a0,a0*sqrt(3),c0],
-              pbc=(1,1,1))
+                  scaled_positions=[(0, 0, 0),
+                                    (1. / 3., 1. / 3., 1. / 2.)],
+                  cell=[[1. / 2., sqrt(3) / 2., 0], [-1. / 2., sqrt(3) / 2., 0], [0, 0, 1]],
+                  pbc=(1, 1, 1))
 
-    dist = [[1+opt, 0, 0], [0, 1+opt, 0], [0, 0, 1/(1+opt)**2]]
+    dist = [[a0*(1+opt), 0 , 0], [0, a0*(1+opt), 0], [0, 0, c0*1/((1 + opt)**2)]]
     atoms.set_cell(np.dot( atoms.get_cell(), dist), scale_atoms=True)
 
     print atoms.get_cell()
+
+    print atoms.get_cell()
+    print atoms.positions
 
     atoms.set_tags([1, 1])
 
@@ -73,9 +77,11 @@ for opt in OPTIONS:
              lat=9,
              kpts=[13, 13, 13],
              dmax=2.52,
-          #   dos='D',
-             aw = 0.60,
-             sofc='Y'
+             iprim=1
+             #   dos='D',
+             #   aw = 0.70,
+             #   dmax = 1.50,
+             #   sofc='Y'
              )
     calc.set_alloys(alloys)
 
