@@ -650,9 +650,9 @@ class EMTO(Calculator):
             b = lattice[1]/(sqrt(3)/2)
             c = lattice[2]
         else : # 7, 12, 13, 14
-            a = cell[0][0]
-            b = cell[1][1]
-            c = cell[2][2]
+            a = np.linalg.norm(cell[0])
+            b = np.linalg.norm(cell[1])
+            c = np.linalg.norm(cell[2])
 
         print(lattice)
         print([a,a/a,b/a,c/a])
@@ -726,9 +726,9 @@ class EMTO(Calculator):
             b = lattice[1]/(sqrt(3)/2)
             c = lattice[2]
         else : # 7, 12, 13, 14
-            a = cell[0][0]
-            b = cell[1][1]
-            c = cell[2][2]
+            a = np.linalg.norm(cell[0])
+            b = np.linalg.norm(cell[1])
+            c = np.linalg.norm(cell[2])
 
         kstr.write('A........={:10.7f} '.format(a / a))
         kstr.write('B.......={:10.7f} '.format(b / a))

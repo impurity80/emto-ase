@@ -48,7 +48,7 @@ cr = 0.15
 fe = 1.0-cr
 
 for opt in OPTIONS:
-    a0 = 3.59 / np.sqrt(2)
+    a0 = 3.554 / np.sqrt(2)
     #    c0 = np.sqrt(8 / 3.0) * a0
     c0 = 1.585 * a0
 
@@ -76,8 +76,7 @@ for opt in OPTIONS:
     calc.set(dir='{0}/calc/{1}/opt-{2}'.format(temp_dir, name, opt),
              lat=9,
              kpts=[13, 13, 13],
-             dmax=2.52,
-             iprim=1
+             dmax=2.52
              #   dos='D',
              #   aw = 0.70,
              #   dmax = 1.50,

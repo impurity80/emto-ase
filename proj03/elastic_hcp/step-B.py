@@ -48,7 +48,7 @@ cr = 0.15
 fe = 1.0-cr
 
 for opt in OPTIONS:
-    a0 = 3.59 * opt / np.sqrt(2)
+    a0 = 3.554 * opt / np.sqrt(2)
 #    c0 = np.sqrt(8 / 3.0) * a0
     c0= 1.585 * a0
 

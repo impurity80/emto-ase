@@ -41,6 +41,7 @@ OPTIONS = np.linspace(0, 0.05, 6)
 
 volumes = []
 energies = []
+opts = []
 
 print OPTIONS
 
@@ -48,7 +49,7 @@ cr = 0.15
 fe = 1.0-cr
 
 for opt in OPTIONS:
-    a0 = 3.59 / np.sqrt(2)
+    a0 = 3.554 / np.sqrt(2)
     #    c0 = np.sqrt(8 / 3.0) * a0
     c0 = 1.585 * a0
 
@@ -76,7 +77,7 @@ for opt in OPTIONS:
     calc.set(dir='{0}/calc/{1}/opt-{2}'.format(temp_dir, name, opt),
              lat=9,
              kpts=[13, 13, 13],
-             dmax=2.52,
+             dmax=2.52/(1+opt),
              iprim=1
              #   dos='D',
              #   aw = 0.70,
@@ -92,6 +93,7 @@ for opt in OPTIONS:
     nm_v = atoms.get_volume() / atoms.get_number_of_atoms()
 
     if nm_e < -0.001:
+        opts.append(opt)
         volumes.append(nm_v)
         energies.append(nm_e)
 
@@ -99,7 +101,7 @@ for opt in OPTIONS:
 
 print volumes, energies
 
-OPTIONS = (-1.0*OPTIONS[::-1]).tolist() + OPTIONS.tolist()
+OPTIONS = (-1.0*opts[::-1]).tolist() + opts.tolist()
 energies = (energies[::-1]) + energies
 
 coefs = poly.polyfit(OPTIONS, energies, 3)
