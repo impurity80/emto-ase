@@ -19,7 +19,7 @@ rank = comm.Get_rank()
 
 print rank, size
 
-name = 'B'
+name = 'B-3'
 
 curr_dir = os.getcwd()
 
@@ -45,40 +45,29 @@ energies = []
 print OPTIONS
 
 cr = 0.15
+ni = 0.15
 fe = 1.0-cr
 
 for opt in OPTIONS:
-    a0 = 3.59 * opt / np.sqrt(2)
-#    c0 = np.sqrt(8 / 3.0) * a0
-    c0= 1.585 * a0
 
-    atoms = Atoms('Fe2',
-              scaled_positions=[(0, 0, 0),
-                                (1./3., 1./3., 1./2.)],
-              cell = [[1./2.,sqrt(3)/2.,0],[-1./2., sqrt(3)/2., 0] ,[0,0,1]],
-              pbc=(1,1,1))
+    a0 = 3.52 * opt / np.sqrt(2)
+    #   c0 = np.sqrt(8 / 3.0) * a0
+    c0 = a0 * 1.585
+    atoms = bulk('Fe', 'hcp', a=a0, c=c0)
+    atoms.set_tags([1, 1])
 
-
-  #  atoms.set_cell([[1/2, sqrt(3)/2, 0],[-1/2, sqrt(3)/2, 0] ,[0,0,1]])
-
-    scale = [[a0,0,0],[0,a0,0],[0,0,c0]]
-    atoms.set_cell(np.dot( atoms.get_cell(), scale), scale_atoms=True)
+    #    atoms = atoms + Atom('C', position=(0.5*l,0.5*l,0.5*l), tag=2)
 
     print atoms.get_cell()
-    print atoms.positions
-
-    atoms.set_tags([1, 1])
 
     alloys = []
     alloys.append(Alloy(1, 'Fe', fe, 0.0))
     alloys.append(Alloy(1, 'Cr', cr, 0.0))
 
     calc = EMTO()
-    calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
-             lat=9,
+    calc.set(dir='{0}/calc/{1}/opt-{2}'.format(temp_dir, name, opt),
+             lat=4,
              kpts=[13, 13, 13],
-             dmax=2.52,
-             iprim=1
           #   dos='D',
           #   aw = 0.70,
           #   dmax = 1.50,

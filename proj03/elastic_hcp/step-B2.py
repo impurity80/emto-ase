@@ -19,7 +19,7 @@ rank = comm.Get_rank()
 
 print rank, size
 
-name = 'B'
+name = 'B-2'
 
 curr_dir = os.getcwd()
 
@@ -58,7 +58,6 @@ for opt in OPTIONS:
               cell = [[1./2.,sqrt(3)/2.,0],[-1./2., sqrt(3)/2., 0] ,[0,0,1]],
               pbc=(1,1,1))
 
-
   #  atoms.set_cell([[1/2, sqrt(3)/2, 0],[-1/2, sqrt(3)/2, 0] ,[0,0,1]])
 
     scale = [[a0,0,0],[0,a0,0],[0,0,c0]]
@@ -77,8 +76,7 @@ for opt in OPTIONS:
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
              lat=9,
              kpts=[13, 13, 13],
-             dmax=2.52,
-             iprim=1
+             dmax=2.52
           #   dos='D',
           #   aw = 0.70,
           #   dmax = 1.50,

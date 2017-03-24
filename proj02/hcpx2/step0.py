@@ -71,7 +71,7 @@ for opt in OPTIONS:
           #   dos='D',
           #   aw = 0.70,
           #   dmax = 1.50,
-             sofc='Y'
+          #   sofc='Y'
              )
     calc.set_alloys(alloys)
 

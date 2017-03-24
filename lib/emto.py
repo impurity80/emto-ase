@@ -638,21 +638,21 @@ class EMTO(Calculator):
             a = lattice[0]
             b = lattice[1]
             c = lattice[2]
-
         elif self.common_params['lat']==9: # orgonal axis and base - base centered orthorhomibc
-            a = lattice[0]*2
+            if cell[0][1] > 1e-3: # primitive cell
+                a = lattice[0]*2
+            else: # conventional cell
+                a = lattice[0]
             b = lattice[1]
             c = lattice[2]
-
         elif self.common_params['lat']==4: # hexagonal axis
             a = lattice[0]
             b = lattice[1]/(sqrt(3)/2)
             c = lattice[2]
-
         else : # 7, 12, 13, 14
-            a = np.linalg.norm(cell.transpose()[0])
-            b = np.linalg.norm(cell.transpose()[1])
-            c = np.linalg.norm(cell.transpose()[2])
+            a = cell[0][0]
+            b = cell[1][1]
+            c = cell[2][2]
 
         print(lattice)
         print([a,a/a,b/a,c/a])
@@ -714,21 +714,21 @@ class EMTO(Calculator):
             a = lattice[0]
             b = lattice[1]
             c = lattice[2]
-
         elif self.common_params['lat']==9: # orgonal axis and base - base centered orthorhomibc
-            a = lattice[0]*2
+            if cell[0][1] > 1e-3: # primitive cell
+                a = lattice[0]*2
+            else: # conventional cell
+                a = lattice[0]
             b = lattice[1]
             c = lattice[2]
-
         elif self.common_params['lat']==4: # hexagonal axis
             a = lattice[0]
             b = lattice[1]/(sqrt(3)/2)
             c = lattice[2]
-
         else : # 7, 12, 13, 14
-            a = np.linalg.norm(cell.transpose()[0])
-            b = np.linalg.norm(cell.transpose()[1])
-            c = np.linalg.norm(cell.transpose()[2])
+            a = cell[0][0]
+            b = cell[1][1]
+            c = cell[2][2]
 
         kstr.write('A........={:10.7f} '.format(a / a))
         kstr.write('B.......={:10.7f} '.format(b / a))
