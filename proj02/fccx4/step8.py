@@ -41,13 +41,13 @@ OPTIONS = np.linspace(0.98, 1.02, 9)
 volumes = []
 energies = []
 
-cr = 0.18
-mn = 0.10
+cr = 0.15
+mn = 0.15
 fe = 1.0-cr-mn
 
 for opt in OPTIONS:
 
-    l = 3.602 * opt
+    l = 3.7 * opt
 
     atoms = Atoms('Fe4',
               scaled_positions=[
@@ -69,10 +69,10 @@ for opt in OPTIONS:
     alloys.append(Alloy(1, 'Fe', fe/2, -1.0))
     alloys.append(Alloy(1, 'Cr', cr/2, 1.0))
     alloys.append(Alloy(1, 'Cr', cr/2, -1.0))
-    alloys.append(Alloy(1, 'Mn', mn/2, 1.0))
-    alloys.append(Alloy(1, 'Mn', mn/2, -1.0))
-    alloys.append(Alloy(2, 'N', 0.1, 0.0))
-    alloys.append(Alloy(2, 'Va', 0.9, 0.0))
+    alloys.append(Alloy(1, 'Ni', mn/2, 1.0))
+    alloys.append(Alloy(1, 'Ni', mn/2, -1.0))
+    alloys.append(Alloy(2, 'N', 0.7, 0.0))
+    alloys.append(Alloy(2, 'Va', 0.3, 0.0))
 
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),

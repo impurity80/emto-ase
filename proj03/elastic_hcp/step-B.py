@@ -37,7 +37,7 @@ os.system('rm {0}'.format(result_sum))
 save(result, '{0}'.format(name))
 save(result_sum, '{0}'.format(name))
 
-OPTIONS = np.linspace(0.98, 1.02, 9)
+OPTIONS = np.linspace(0.98, 1.02, 1)
 
 volumes = []
 energies = []
@@ -48,14 +48,21 @@ cr = 0.15
 fe = 1.0-cr
 
 for opt in OPTIONS:
-    a0 = 3.59 * opt / np.sqrt(2) / np.power(2, 1./3.)
-    c0 = np.sqrt(8 / 3.0) * a0
+    a0 = 3.59 * opt / np.sqrt(2)
+#    c0 = np.sqrt(8 / 3.0) * a0
+    c0= 1.585 * a0
 
     atoms = Atoms('Fe2',
               scaled_positions=[(0, 0, 0),
-                                (0, 1./3., 1./2.)],
-              cell=[a0,a0*sqrt(3),c0],
+                                (1./3., 1./3., 1./2.)],
+              cell = [[1./2.,sqrt(3)/2.,0],[-1./2., sqrt(3)/2., 0] ,[0,0,1]],
               pbc=(1,1,1))
+
+
+  #  atoms.set_cell([[1/2, sqrt(3)/2, 0],[-1/2, sqrt(3)/2, 0] ,[0,0,1]])
+
+    scale = [[a0,0,0],[0,a0,0],[0,0,c0]]
+    atoms.set_cell(np.dot( atoms.get_cell(), scale), scale_atoms=True)
 
     print atoms.get_cell()
     print atoms.positions
@@ -71,10 +78,11 @@ for opt in OPTIONS:
              lat=9,
              kpts=[13, 13, 13],
              dmax=2.52,
+             iprim=1
           #   dos='D',
           #   aw = 0.70,
           #   dmax = 1.50,
-             sofc='Y'
+          #   sofc='Y'
              )
     calc.set_alloys(alloys)
 

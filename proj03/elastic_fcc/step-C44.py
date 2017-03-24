@@ -37,7 +37,7 @@ os.system('rm {0}'.format(result_sum))
 save(result, '{0}'.format(name))
 save(result_sum, '{0}'.format(name))
 
-OPTIONS = np.linspace(0, 0.05, 6)
+OPTIONS = np.linspace(0.01, 0.05, 1)
 volumes = []
 energies = []
 
