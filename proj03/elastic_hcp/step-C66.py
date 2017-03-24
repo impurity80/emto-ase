@@ -99,6 +99,9 @@ for opt in OPTIONS:
 
 print volumes, energies
 
+OPTIONS = (-1.0*OPTIONS[::-1]).tolist() + OPTIONS.tolist()
+energies = (energies[::-1]) + energies
+
 coefs = poly.polyfit(OPTIONS, energies, 3)
 
 C = coefs[2]/volumes[0]/kJ*1.0e24

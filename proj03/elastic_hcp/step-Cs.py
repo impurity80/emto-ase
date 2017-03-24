@@ -19,7 +19,7 @@ rank = comm.Get_rank()
 
 print rank, size
 
-name = 'C'
+name = 'Cs'
 
 curr_dir = os.getcwd()
 
@@ -37,7 +37,7 @@ os.system('rm {0}'.format(result_sum))
 save(result, '{0}'.format(name))
 save(result_sum, '{0}'.format(name))
 
-OPTIONS = np.linspace(0, 0.05, 6)
+OPTIONS = np.linspace(-0.05, 0.05, 11)
 
 volumes = []
 energies = []
@@ -58,7 +58,7 @@ for opt in OPTIONS:
                   cell=[[1. / 2., sqrt(3) / 2., 0], [-1. / 2., sqrt(3) / 2., 0], [0, 0, 1]],
                   pbc=(1, 1, 1))
 
-    dist = [[a0*(1+opt), 0 , 0], [0, a0*(1+opt), 0], [0, 0, c0*1 / (1 - opt ** 2)]]
+    dist = [[a0*(1+opt), 0 , 0], [0, a0*(1+opt), 0], [0, 0, c0*1/((1 + opt)**2)]]
     atoms.set_cell(np.dot( atoms.get_cell(), dist), scale_atoms=True)
 
     print atoms.get_cell()
@@ -99,15 +99,13 @@ for opt in OPTIONS:
 
 print volumes, energies
 
-OPTIONS = (-1.0*OPTIONS[::-1]).tolist() + OPTIONS.tolist()
-energies = (energies[::-1]) + energies
-
-
 coefs = poly.polyfit(OPTIONS, energies, 3)
 
 C = coefs[2]/volumes[0]/kJ*1.0e24
 
 print C
+
+save(result, C)
 
 x_new = np.linspace(OPTIONS[0]-0.01, OPTIONS[-1]+0.01, num=len(OPTIONS)*10)
 
