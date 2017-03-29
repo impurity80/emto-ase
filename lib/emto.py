@@ -478,7 +478,7 @@ class EMTO(Calculator):
     #    self.kgrn_params['nz2'] = 16
     #    self.kgrn_params['nz3'] = 8
         self.kgrn_params['nres'] = 4
-        self.kgrn_params['nzd'] = 200
+        self.kgrn_params['nzd'] = 1000
         self.kgrn_params['depth'] = 1.0
         self.kgrn_params['imagz'] = 0.02
         self.kgrn_params['eps'] = 0.200
@@ -496,7 +496,7 @@ class EMTO(Calculator):
         self.kgrn_params['dsws'] = 0.05
         self.kgrn_params['alpcpa'] = 0.6020
 
-        self.kgrn_params['iex'] = 4
+        self.kgrn_params['iex'] = 4 # P-W LDA
         self.kgrn_params['np'] = 251
         self.kgrn_params['nes'] = 15
         self.kgrn_params['niter'] = 100
