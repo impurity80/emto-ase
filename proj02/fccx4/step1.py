@@ -47,7 +47,7 @@ fe = 1.0-cr-ni
 
 for opt in OPTIONS:
 
-    l = 3.602 * opt
+    l = 3.65 * opt
 
     atoms = Atoms('Fe4',
               scaled_positions=[
@@ -72,7 +72,7 @@ for opt in OPTIONS:
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
              lat=1,
-             kpts=[13,13,13],
+             kpts=[17,17,17],
              dos='D',
              aw = 0.60,
              )

@@ -406,11 +406,11 @@ class EMTO(Calculator):
         for key in kgrn_keys:
             self.kgrn_params[key] = None
 
-        self.energy_lda = 0
-        self.energy_pbe = 0
-        self.energy_p07 = 0
-        self.energy_am5 = 0
-        self.energy_lag = 0
+        self.energy_lda = 0 # Perdew-Wang-CA
+        self.energy_pbe = 0 # Perdew-B-E GGA
+        self.energy_p07 = 0 # Perdew et al. PBEsol
+        self.energy_am5 = 0 # Armiento Mattsson approximation. R. Armiento and A. E. Mattsson, PRB 72, 085108 (2005)
+        self.energy_lag = 0 # Local Airy Gas
 
         self.common_params['dir'] = 'work'
     #    self.common_params['nq'] = 1
@@ -487,9 +487,9 @@ class EMTO(Calculator):
         self.kgrn_params['efmix'] = 1.0
         self.kgrn_params['vmtz'] = 0.0
         self.kgrn_params['mmom'] = 0.0
-        self.kgrn_params['tole'] = '1.d-08' # 1e-08
-        self.kgrn_params['tolef'] = '1.d-07' # 1e-07
-        self.kgrn_params['tolcpa'] = '1.d-06' # 1e-06
+        self.kgrn_params['tole'] = 1.e-08 # 1e-08
+        self.kgrn_params['tolef'] = 1.e-07 # 1e-07
+        self.kgrn_params['tolcpa'] = 1.e-06 # 1e-06
         self.kgrn_params['tfermi'] = 500.0
     #    self.kgrn_params['sws'] = 2.69
         self.kgrn_params['nsws'] = 1
@@ -507,10 +507,10 @@ class EMTO(Calculator):
         self.kgrn_params['rmax'] = 20
         self.kgrn_params['dx'] = 0.03
         self.kgrn_params['dr1'] = 0.002
-        self.kgrn_params['test'] = '1.00e-12'
-        self.kgrn_params['teste'] = '1.00e-12'
-        self.kgrn_params['testy'] = '1.00e-12'
-        self.kgrn_params['testv'] = '1.00e-12'
+        self.kgrn_params['test'] = 1.00e-12
+        self.kgrn_params['teste'] = 1.00e-12
+        self.kgrn_params['testy'] = 1.00e-12
+        self.kgrn_params['testv'] = 1.00e-12
 
     #    config = open('{0}/atom.cfg'.format(os.environ['EMTOLIB']), 'rt')
 
@@ -560,7 +560,8 @@ class EMTO(Calculator):
         self.update(atoms)
         return self.energy_pbe
 
-    def get_potential_energies():
+    def get_potential_energies(self, atoms):
+        self.update(atoms)
         return [self.energy_lda, self.energy_pbe, self.energy_p07, self.energy_am5, self.energy_lag]
 
     def update(self, atoms):
@@ -848,9 +849,9 @@ class EMTO(Calculator):
         kgrn.write('VMTZ..={:7.3f} '.format(self.kgrn_params['vmtz']))
         kgrn.write('MMOM..={:7.3f}\n'.format(self.kgrn_params['mmom']))
 
-        kgrn.write('TOLE...={:>7} '.format(self.kgrn_params['tole']))
-        kgrn.write('TOLEF.={:>7} '.format(self.kgrn_params['tolef']))
-        kgrn.write('TOLCPA={:>7} '.format(self.kgrn_params['tolcpa']))
+        kgrn.write('TOLE...={:7.1E} '.format(self.kgrn_params['tole']))
+        kgrn.write('TOLEF.={:7.1E} '.format(self.kgrn_params['tolef']))
+        kgrn.write('TOLCPA={:7.1E} '.format(self.kgrn_params['tolcpa']))
         kgrn.write('TFERMI={:7.1f} (K)\n'.format(self.kgrn_params['tfermi']))
 
         sws = (atoms.get_volume()/len(atoms)*3.0/4.0/pi)**(1.0/3.0)/0.529177
@@ -905,11 +906,11 @@ class EMTO(Calculator):
 
         kgrn.write('DX.......={:10.6f} '.format(self.kgrn_params['dx']))
         kgrn.write('DR1.....={:10.6f} '.format(self.kgrn_params['dr1']))
-        kgrn.write('TEST....={:>10}\n'.format(self.kgrn_params['test']))
+        kgrn.write('TEST....={:10.2e}\n'.format(self.kgrn_params['test']))
 
-        kgrn.write('TESTE....={:>10} '.format(self.kgrn_params['teste']))
-        kgrn.write('TESTY...={:>10} '.format(self.kgrn_params['testy']))
-        kgrn.write('TESTV...={:>10}\n'.format(self.kgrn_params['testv']))
+        kgrn.write('TESTE....={:10.2e} '.format(self.kgrn_params['teste']))
+        kgrn.write('TESTY...={:10.2e} '.format(self.kgrn_params['testy']))
+        kgrn.write('TESTV...={:10.2e}\n'.format(self.kgrn_params['testv']))
 
         for atom in atoms:
             for alloy in self.alloys:

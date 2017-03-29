@@ -72,9 +72,9 @@ for opt in OPTIONS:
 
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
-             lat=1,
-             kpts=[6,6,6],
-             dmax=0.5
+             lat=2,
+             kpts=[6,9,6],
+             dmax=0.8
              )
     calc.set_alloys(alloys)
 
