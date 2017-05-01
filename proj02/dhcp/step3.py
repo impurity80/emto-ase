@@ -19,7 +19,7 @@ rank = comm.Get_rank()
 
 print rank, size
 
-name = '1'
+name = '3'
 
 curr_dir = os.getcwd()
 
@@ -37,45 +37,50 @@ os.system('rm {0}'.format(result_sum))
 save(result, '{0}'.format(name))
 save(result_sum, '{0}'.format(name))
 
-OPTIONS = np.linspace(0.98, 1.02, 9)
+OPTIONS = np.linspace(0.95, 0.99, 9)
+
 volumes = []
 energies = []
 
+print OPTIONS
+
 cr = 0.15
-ni = 0.15
-fe = 1.0-cr-ni
+fe = 1.0-cr
 
 for opt in OPTIONS:
-
-    l = 3.65 * opt
+    a0 = 3.554 * opt / np.sqrt(2)
+#    c0 = np.sqrt(8 / 3.0) * a0
+    c0= 1.585 * a0
 
     atoms = Atoms('Fe4',
-              scaled_positions=[
-                                (0, 0, 0),
-                                (0.5, 0.5, 0),
-                                (0.5, 0, 0.5),
-                                (0, 0.5, 0.5)],
-              cell=[l,l,l],
+              scaled_positions=[(0, 0, 0),
+                                (1./3., 1./3., 1./4.),
+                                (0, 0, 2./4.),
+                                (2./3., 2./3., 3./4.)],
+              cell = [[1./2.*a0,sqrt(3)/2.*a0,0],[-1./2.*a0, sqrt(3)/2.*a0, 0] ,[0,0,2.0*c0]],
               pbc=(1,1,1))
+
+
+  #  atoms.set_cell([[1/2, sqrt(3)/2, 0],[-1/2, sqrt(3)/2, 0] ,[0,0,1]])
+
+    print atoms.get_cell()
+    print atoms.positions
 
     atoms.set_tags([1, 1, 1, 1])
 
-    # view(atoms)
-
-    atoms = atoms + Atom('C', position=(0,0,0.5*l), tag=2)
-
     alloys = []
-    alloys.append(Alloy(1, 'Fe', 0.5, 1.0))
-    alloys.append(Alloy(1, 'Fe', 0.5, -1.0))
-    alloys.append(Alloy(2, 'C', 1.0, 0.0))
+    alloys.append(Alloy(1, 'Fe', fe, 0.0))
+    alloys.append(Alloy(1, 'Cr', cr, 0.0))
 
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
-             lat=1,
-             kpts=[17,17,17],
-             dos='D',
-             aw = 0.60,
-             sofc = 'Y',
+             lat=9,
+             kpts=[13, 13, 13],
+             dmax=2.52
+          #   dos='D',
+          #   aw = 0.70,
+          #   dmax = 1.50,
+          #   sofc='Y'
              )
     calc.set_alloys(alloys)
 

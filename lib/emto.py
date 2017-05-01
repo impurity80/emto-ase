@@ -68,7 +68,7 @@ elements['N'] =  'Iz=  07 Norb=  4 Ion=  0 Config= 2s2_2p3\n' \
                   'n      1  2  2  2\n' \
                   'Kappa -1 -1  1 -2\n' \
                   'Occup  2  2  2  1\n' \
-                  'Valen  0  1  1  1\n'
+                  'Valen  0  0  1  1\n'
 elements['O'] =  'Iz=  08 Norb=  4 Ion=  0 Config= 2s2_2p4\n' \
                   'n      1  2  2  2\n' \
                   'Kappa -1 -1  1 -2\n' \
@@ -238,17 +238,17 @@ elements['Hf'] =  'Iz=  72 Norb= 21 Ion=  0 Config= 5d2_6s2\n' \
                   'n      1  2  2  2  3  3  3  3  3  4  4  4  4  4  4  4  5  5  5  5  6\n' \
                   'Kappa -1 -1  1 -2 -1  1 -2  2 -3 -1  1 -2  2 -3  3 -4 -1  1 -2  2 -1\n' \
                   'Occup  2  2  2  4  2  2  4  4  6  2  2  4  4  6  6  8  2  2  4  2  2\n' \
-                  'Valen  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  1  1\n'
+                  'Valen  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  1\n'
 elements['Ta'] =  'Iz=  73 Norb= 21 Ion=  0 Config= 5d3_6s2\n' \
                   'n      1  2  2  2  3  3  3  3  3  4  4  4  4  4  4  4  5  5  5  5  6\n' \
                   'Kappa -1 -1  1 -2 -1  1 -2  2 -3 -1  1 -2  2 -3  3 -4 -1  1 -2  2 -1\n' \
                   'Occup  2  2  2  4  2  2  4  4  6  2  2  4  4  6  6  8  2  2  4  3  2\n' \
-                  'Valen  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  1  1\n'
+                  'Valen  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  1\n'
 elements['W'] =  'Iz=  74 Norb= 21 Ion=  0 Config= 5d4_6s2\n' \
                   'n      1  2  2  2  3  3  3  3  3  4  4  4  4  4  4  4  5  5  5  5  6\n' \
                   'Kappa -1 -1  1 -2 -1  1 -2  2 -3 -1  1 -2  2 -3  3 -4 -1  1 -2  2 -1\n' \
                   'Occup  2  2  2  4  2  2  4  4  6  2  2  4  4  6  6  8  2  2  4  4  2\n' \
-                  'Valen  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  1  1\n'
+                  'Valen  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  1\n'
 elements['Re'] =  'Iz=  75 Norb= 22 Ion=  0 Config= 5d5_6s2\n' \
                   'n      1  2  2  2  3  3  3  3  3  4  4  4  4  4  4  4  5  5  5  5  5  6\n' \
                   'Kappa -1 -1  1 -2 -1  1 -2  2 -3 -1  1 -2  2 -3  3 -4 -1  1 -2  2 -3 -1\n' \
@@ -487,7 +487,7 @@ class EMTO(Calculator):
         self.kgrn_params['efmix'] = 1.0
         self.kgrn_params['vmtz'] = 0.0
         self.kgrn_params['mmom'] = 0.0
-        self.kgrn_params['tole'] = 1.e-08 # 1e-08
+        self.kgrn_params['tole'] = 1.e-07 # 1e-08
         self.kgrn_params['tolef'] = 1.e-07 # 1e-07
         self.kgrn_params['tolcpa'] = 1.e-06 # 1e-06
         self.kgrn_params['tfermi'] = 500.0
@@ -956,7 +956,8 @@ class EMTO(Calculator):
             if line.rfind('TOT-AM5') > -1:
                 self.energy_am5 = float(line.split('(Ry)')[0].split('TOT-AM5')[1].strip())*13.6058
             if line.rfind('TOT-LAG') > -1:
-                self.energy_lag = float(line.split('(Ry)')[0].split('TOT-LAG')[1].strip()) * 13.6058
+                self.energy_lag = float(line.split('(Ry)')[0].split('TOT-LAG')[1].strip())*13.6058
+
             #    self.energy_pbe = float(line.split(' ')[8].strip())*13.6058
             #    self.energy_pbe = self.energy_pbe*13.6058 # Ry -> eV conversion
 
