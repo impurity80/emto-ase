@@ -9,8 +9,9 @@ from emto import *
 from ase.utils.eos import EquationOfState
 import matplotlib.pyplot as plt
 from ase.lattice import bulk
-from ase.units import *
 from mpi4py import MPI
+from ase.units import *
+import numpy.polynomial.polynomial as poly
 
 comm = MPI.COMM_WORLD
 size = comm.Get_size()
@@ -18,7 +19,7 @@ rank = comm.Get_rank()
 
 print rank, size
 
-name = '2'
+name = '0'
 
 curr_dir = os.getcwd()
 
@@ -36,45 +37,54 @@ os.system('rm {0}'.format(result_sum))
 save(result, '{0}'.format(name))
 save(result_sum, '{0}'.format(name))
 
-
 OPTIONS = np.linspace(0.98, 1.02, 9)
+
 volumes = []
 energies = []
 
+print OPTIONS
+
 cr = 0.15
+ni = 0.15
 fe = 1.0-cr
 
 for opt in OPTIONS:
 
-    l = 3.602 * 1.5 * opt
-    a = l / sqrt(2)
-    c = l
+    a0 = 3.52 * opt / np.sqrt(2)
+    c0 = np.sqrt(8 / 3.0) * a0
 
-    atoms = Atoms('Fe4',
-                  scaled_positions=[
-                      (0.0, 0.0, 0),
-                      (0.5, 0.5, 0.25),
-                      (0.0, 0.0, 0.5),
-                      (0.5, 0.5, 0.75)],
-                  cell=[a, a, 2.0*c],
-                  pbc=(1, 1, 1))
+    atoms = Atoms('Fe3',
+              scaled_positions=[(0, 0, 0),
+                                (1./3., 1./3., 1./3.),
+                                (2./3., 2./3., 2./3.)],
+              cell = [[1./2.*a0,sqrt(3)/2.*a0,0],[-1./2.*a0, sqrt(3)/2.*a0, 0] ,[0,0,1.5*c0]],
+              pbc=(1,1,1))
 
-    atoms.set_tags([1, 1, 1, 1])
+
+    atoms.set_tags([1, 1, 1])
+
+    #    atoms = atoms + Atom('C', position=(0.5*l,0.5*l,0.5*l), tag=2)
+
+    print atoms.get_cell()
 
     alloys = []
     alloys.append(Alloy(1, 'Fe', fe, 0.0))
-    alloys.append(Alloy(1, 'Cr', cr , 0.0))
+    alloys.append(Alloy(1, 'Cr', cr, 0.0))
 
     calc = EMTO()
-    calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
-             lat=6,
-             afm='F',
-             kpts=[27, 27, 27],
-             amix=0.01,
+    calc.set(dir='{0}/calc/{1}/opt-{2}'.format(temp_dir, name, opt),
+             lat=9,
+             kpts=[13, 13, 13],
+          #   dos='D',
+          #   aw = 0.70,
+          #   dmax = 1.50,
+          #   sofc='Y'
              )
     calc.set_alloys(alloys)
 
     atoms.set_calculator(calc)
+
+    nm_e = 0
     nm_e = atoms.get_potential_energy() / atoms.get_number_of_atoms()
     nm_v = atoms.get_volume() / atoms.get_number_of_atoms()
 
@@ -98,7 +108,9 @@ save(result, energies)
 
 save(result, '------------------------')
 
-save(result_sum, '{0}, {1}, {2}, {3}, {4}, {5}'.format(name, e0, v0, B/kJ*1.0e24, volumes, energies))
+save(result_sum, '{0}, {1}, {2}, {3}, {4}, {5}'.format(name, e0, v0, B, volumes, energies))
+
+
 
 
 

@@ -9,8 +9,9 @@ from emto import *
 from ase.utils.eos import EquationOfState
 import matplotlib.pyplot as plt
 from ase.lattice import bulk
-from ase.units import *
 from mpi4py import MPI
+from ase.units import *
+import numpy.polynomial.polynomial as poly
 
 comm = MPI.COMM_WORLD
 size = comm.Get_size()
@@ -18,7 +19,7 @@ rank = comm.Get_rank()
 
 print rank, size
 
-name = '2'
+name = 'C'
 
 curr_dir = os.getcwd()
 
@@ -36,45 +37,44 @@ os.system('rm {0}'.format(result_sum))
 save(result, '{0}'.format(name))
 save(result_sum, '{0}'.format(name))
 
-
-OPTIONS = np.linspace(0.98, 1.02, 9)
+OPTIONS = np.linspace(0.00, 0.05, 6)
 volumes = []
 energies = []
 
-cr = 0.15
-fe = 1.0-cr
+cr = 0.18
+ni = 0.12
+fe = 1.0-cr-ni
 
 for opt in OPTIONS:
 
-    l = 3.602 * 1.5 * opt
-    a = l / sqrt(2)
-    c = l
+    l = 3.602
+    atoms = bulk('Fe', 'fcc', a=l)
 
-    atoms = Atoms('Fe4',
-                  scaled_positions=[
-                      (0.0, 0.0, 0),
-                      (0.5, 0.5, 0.25),
-                      (0.0, 0.0, 0.5),
-                      (0.5, 0.5, 0.75)],
-                  cell=[a, a, 2.0*c],
-                  pbc=(1, 1, 1))
-
-    atoms.set_tags([1, 1, 1, 1])
+    atoms.set_tags([1])
 
     alloys = []
-    alloys.append(Alloy(1, 'Fe', fe, 0.0))
-    alloys.append(Alloy(1, 'Cr', cr , 0.0))
+    alloys.append(Alloy(1, 'Fe', fe / 2, 1.0))
+    alloys.append(Alloy(1, 'Fe', fe / 2, -1.0))
+    alloys.append(Alloy(1, 'Cr', cr / 2, 1.0))
+    alloys.append(Alloy(1, 'Cr', cr / 2, -1.0))
+    alloys.append(Alloy(1, 'Ni', ni / 2, 1.0))
+    alloys.append(Alloy(1, 'Ni', ni / 2, -1.0))
+
+#    dist = [[1+opt, 0, 0], [0, 1+opt, 0], [0, 0, 1/(1+opt)**2]]
+    dist = [[1+opt, 0 , 0], [0, 1-opt, 0], [0, 0, 1 / (1 - opt ** 2)]]
+
+    atoms.set_cell(np.dot(  atoms.get_cell(), dist ), scale_atoms=True)
 
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
-             lat=6,
-             afm='F',
-             kpts=[27, 27, 27],
-             amix=0.01,
+             lat=11,
+             kpts=[13, 13, 13],
              )
     calc.set_alloys(alloys)
 
     atoms.set_calculator(calc)
+
+    nm_e = 0
     nm_e = atoms.get_potential_energy() / atoms.get_number_of_atoms()
     nm_v = atoms.get_volume() / atoms.get_number_of_atoms()
 
@@ -86,11 +86,27 @@ for opt in OPTIONS:
 
 print volumes, energies
 
-eos = EquationOfState(volumes, energies)
-v0, e0, B = eos.fit()
-eos.plot('{0}/graph/{1}.png'.format(temp_dir, name))
 
-save(result, '{0} {1} {2} {3}'.format(v0, e0, B/kJ*1.0e24, (4.0 * v0) ** (1.0 / 3.0)))
+OPTIONS = (-1.0*OPTIONS[::-1]).tolist() + OPTIONS.tolist()
+energies = (energies[::-1]) + energies
+
+
+coefs = poly.polyfit(OPTIONS, energies, 3)
+
+C = coefs[2]/volumes[0]/kJ*1.0e24
+
+print C
+
+x_new = np.linspace(OPTIONS[0]-0.01, OPTIONS[-1]+0.01, num=len(OPTIONS)*10)
+
+ffit = poly.polyval(x_new, coefs)
+
+plt.scatter(OPTIONS, energies)
+plt.plot(x_new, ffit)
+plt.savefig('{0}.png'.format(name))
+
+os.system('mv {0}.png {1}/graph'.format(name, temp_dir))
+
 
 save(result, OPTIONS)
 save(result, volumes)
@@ -98,7 +114,7 @@ save(result, energies)
 
 save(result, '------------------------')
 
-save(result_sum, '{0}, {1}, {2}, {3}, {4}, {5}'.format(name, e0, v0, B/kJ*1.0e24, volumes, energies))
+save(result_sum, '{0}, {1}, {2}, {3}'.format(name, C, volumes, energies))
 
 
 

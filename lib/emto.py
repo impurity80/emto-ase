@@ -124,6 +124,11 @@ elements['Cr'] =  'Iz=  24 Norb= 10 Ion=  0 Config= 3d5_4s1\n' \
                   'Kappa -1 -1  1 -2 -1  1 -2  2 -3 -1\n' \
                   'Occup  2  2  2  4  2  2  4  4  1  1\n' \
                   'Valen  0  0  0  0  0  0  0  1  1  1\n'
+elements['Cr_1'] =  'Iz=  24 Norb=  9 Ion=  0 Config= 3d4_4s2\n' \
+                  'n      1  2  2  2  3  3  3  3  4\n' \
+                  'Kappa -1 -1  1 -2 -1  1 -2  2 -1\n' \
+                  'Occup  2  2  2  4  2  2  4  4  2\n' \
+                  'Valen  0  0  0  0  0  0  0  1  1\n'
 elements['Mn'] =  'Iz=  25 Norb= 10 Ion=  0 Config= 3d5_4s2\n' \
                   'n      1  2  2  2  3  3  3  3  3  4\n' \
                   'Kappa -1 -1  1 -2 -1  1 -2  2 -3 -1\n' \
@@ -279,6 +284,12 @@ elements['Hg'] =  'Iz=  80 Norb= 22 Ion=  0 Config= 5d10_6s2\n' \
                   'Kappa -1 -1  1 -2 -1  1 -2  2 -3 -1  1 -2  2 -3  3 -4 -1  1 -2  2 -3 -1\n' \
                   'Occup  2  2  2  4  2  2  4  4  6  2  2  4  4  6  6  8  2  2  4  4  6  2\n' \
                   'Valen  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  1  1\n'
+
+elements['Ga'] =  'Iz=  31 Norb= 11 Ion=  0 Config= 3d10_4s2_4p1\n'\
+                  'n      1  2  2  2  3  3  3  3  3  4  4\n'\
+                  'Kappa -1 -1  1 -2 -1  1 -2  2 -3 -1  1\n'\
+                  'Occup  2  2  2  4  2  2  4  4  6  2  1\n'\
+                  'Valen  0  0  0  0  0  0  0  1  1  1  1\n'
 
 
 common_keys = [
