@@ -4,7 +4,7 @@
 #  Unauthorized copying of this file, via any medium is strictly prohibited
 #  Proprietary and confidential
 #  Written by Jae Hoon Jang <jhjang@kims.re.kr>, January 2017
-#  Version : 0.1
+#  Version : 0.2
 # *******************************************************/
 
 from __future__ import print_function
