@@ -12,10 +12,11 @@ from ase.utils.eos import EquationOfState
 from ase.units import *
 import matplotlib.pyplot as plt
 from ase.lattice import bulk
-import numpy.polynomial.polynomial as poly
 
 from emto_eos import *
 from emto import *
+
+import numpy.polynomial.polynomial as poly
 
 def fcc_elastic_constants(work_dir, alloys):
     l = 3.602
@@ -103,7 +104,7 @@ def EC_FCC_C(work_dir, atoms, calc, OPTIONS = np.linspace(0.00, 0.05, 6)):
 
     save(result, '------------------------')
 
-    save(result, '{0}', C)
+    save(result, '{0}'.format(C))
 
     save(result, '------------------------')
 
@@ -169,7 +170,7 @@ def EC_FCC_C44(work_dir, atoms, calc, OPTIONS = np.linspace(0.00, 0.05, 6)):
 
     save(result, '------------------------')
 
-    save(result, '{0}', C44)
+    save(result, '{0}'.format(C44))
 
     save(result, '------------------------')
 

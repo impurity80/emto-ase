@@ -58,7 +58,7 @@ def EMTO_EOS(work_dir, atoms, calc, OPTIONS = np.linspace(0.98, 1.02, 9)):
 
     save(result, '------------------------')
 
-    save(result, '{0},{1},{2}', v0, e0, B/kJ*1.0e24)
+    save(result, '{0},{1},{2}'.format(v0, e0, B/kJ*1.0e24))
 
     save(result, '------------------------')
 

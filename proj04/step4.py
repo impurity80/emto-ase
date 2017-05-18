@@ -43,11 +43,11 @@ calc.set(
 
 calc.set_alloys(alloys)
 
-v0, e0, B = EMTO_EOS(temp_dir + '/B', atoms, calc)
+#v0, e0, B = EMTO_EOS(temp_dir + '/B', atoms, calc)
 
-l = (4.0 * v0) ** (1.0 / 3.0)
-atoms = bulk('Fe', 'fcc', a=l)
-atoms.set_tags([1])
+#l = (4.0 * v0) ** (1.0 / 3.0)
+#atoms = bulk('Fe', 'fcc', a=l)
+#atoms.set_tags([1])
 
 C = EC_FCC_C(temp_dir + '/C', atoms, calc)
 C44 = EC_FCC_C44(temp_dir + '/C44', atoms, calc)
