@@ -19,7 +19,7 @@ result = '{0}/result-{1}.txt'.format(curr_dir.replace('work', 'temp'),id)
 if rank==0:
     os.system('rm {0}'.format(result))
     save(result, '{0} calculations'.format(id))
-    save(result, 'ni, cr, v0,e0,B,C,C44,C11,C12,A,Gv,Gr,Gh,C12-C44')
+    save(result, 'x,y,v0,e0,B,C,C44,C11,C12,A,Gv,Gr,Gh,C12-C44')
 
 X_OPT = np.linspace(0.0, 0.31, 32)
 Y_OPT = np.linspace(0.10, 0.20, 11)
