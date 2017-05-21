@@ -98,6 +98,8 @@ def EC_FCC_C(work_dir, atoms, calc, OPTIONS = np.linspace(0.00, 0.05, 6)):
     plt.plot(x_new, ffit)
     plt.savefig('C.png')
 
+    os.system('mv C.png {0}'.format(work_dir))
+
     save(result, OPT)
     save(result, volumes)
     save(result, energies)
@@ -163,6 +165,8 @@ def EC_FCC_C44(work_dir, atoms, calc, OPTIONS = np.linspace(0.00, 0.05, 6)):
     plt.scatter(OPT, energies)
     plt.plot(x_new, ffit)
     plt.savefig('C44.png')
+
+    os.system('mv C.png {0}'.format(work_dir))
 
     save(result, OPT)
     save(result, volumes)
