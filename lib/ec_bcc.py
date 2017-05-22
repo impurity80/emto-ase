@@ -25,7 +25,7 @@ def bcc_elastic_constants(work_dir, alloys, l=2.86):
     calc = EMTO()
     calc.set(
         lat=3,
-        kpts=[13, 13, 13],
+        kpts=[27, 27, 27],
         dmax=2.20,
         amix=0.02)
 
@@ -70,9 +70,7 @@ def EC_BCC_C(work_dir, atoms, calc, OPTIONS = np.linspace(0.00, 0.05, 6)):
         a.set_cell(np.dot(atoms.get_cell(), scale), scale_atoms=True)
 
         calc.set(dir='{0}/calc/opt-{1:0.3f}'.format(work_dir, o),
-                 lat=10,
-                 kpts=[27, 27, 27],
-                 dmax=2.20,)
+                 lat=10,)
 
         a.set_calculator(calc)
 
