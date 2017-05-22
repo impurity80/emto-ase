@@ -26,7 +26,8 @@ def bcc_elastic_constants(work_dir, alloys, l=2.86):
     calc.set(
         lat=3,
         kpts=[13, 13, 13],
-        dmax=2.20,)
+        dmax=2.20,
+        amix=0.02)
 
     calc.set_alloys(alloys)
 
