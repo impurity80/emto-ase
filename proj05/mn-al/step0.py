@@ -36,6 +36,6 @@ for y in Y_OPT:
     alloys.append(Alloy(1, 'Al', y / 2, 1.0))
     alloys.append(Alloy(1, 'Al', y / 2, -1.0))
 
-    v0, e0, B, C, C44, C11, C12, A, Gv, Gr, Gh = fcc_elastic_constants(temp_dir+'/'+'{0:0.2f}-{1:0.2f}'.format(x,y), alloys)
+    v0, e0, B, C, C44, C11, C12, A, Gv, Gr, Gh = fcc_elastic_constants(temp_dir+'/'+'{0:0.2f}-{1:0.2f}'.format(x,y), alloys, 3.6+y*0.3)
 
     save(result, '{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}'.format(x,y,v0, e0, B,C,C44,C11,C12,A,Gv,Gr,Gh,C12-C44))

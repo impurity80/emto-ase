@@ -18,8 +18,7 @@ from emto import *
 
 import numpy.polynomial.polynomial as poly
 
-def fcc_elastic_constants(work_dir, alloys):
-    l = 3.602
+def fcc_elastic_constants(work_dir, alloys, l=3.60):
     atoms = bulk('Fe', 'fcc', a=l)
     atoms.set_tags([1])
 

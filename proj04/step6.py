@@ -32,7 +32,7 @@ alloys.append(Alloy(1, 'Al', al / 2, -1.0))
 alloys.append(Alloy(1, 'Ni', ni / 2, 1.0))
 alloys.append(Alloy(1, 'Ni', ni / 2, -1.0))
 
-v0, e0, B, C, C44, C11, C12, A, Gv, Gr, Gh = fcc_elastic_constants(temp_dir, alloys)
+v0, e0, B, C, C44, C11, C12, A, Gv, Gr, Gh = fcc_elastic_constants(temp_dir, alloys, 3.7)
 
 save(result, '{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}'.format(v0, e0, B,C,C44,C11,C12,A,Gv,Gr,Gh,C12-C44))
 
