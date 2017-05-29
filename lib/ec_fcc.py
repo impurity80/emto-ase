@@ -29,7 +29,7 @@ def fcc_elastic_constants(work_dir, alloys, l=3.60):
 
     calc.set_alloys(alloys)
 
-    v0, e0, B = EMTO_EOS(work_dir + '/B', atoms, calc)
+    v0, e0, B = EMTO_EOS(work_dir + '/B', atoms, calc, np.linspace(0.98, 1.02, 9))
 
     l = (4.0 * v0) ** (1.0 / 3.0)
     atoms = bulk('Fe', 'fcc', a=l)
@@ -93,6 +93,7 @@ def EC_FCC_C(work_dir, atoms, calc, OPTIONS = np.linspace(0.00, 0.05, 6)):
 
     ffit = poly.polyval(x_new, coefs)
 
+    plt.clf()
     plt.scatter(OPT, energies)
     plt.plot(x_new, ffit)
     plt.savefig('C.png')
@@ -161,11 +162,12 @@ def EC_FCC_C44(work_dir, atoms, calc, OPTIONS = np.linspace(0.00, 0.05, 6)):
 
     ffit = poly.polyval(x_new, coefs)
 
+    plt.clf()
     plt.scatter(OPT, energies)
     plt.plot(x_new, ffit)
     plt.savefig('C44.png')
 
-    os.system('mv C.png {0}'.format(work_dir))
+    os.system('mv C44.png {0}'.format(work_dir))
 
     save(result, OPT)
     save(result, volumes)

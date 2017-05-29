@@ -97,6 +97,8 @@ def EC_BCC_C(work_dir, atoms, calc, OPTIONS = np.linspace(0.00, 0.05, 6)):
 
     ffit = poly.polyval(x_new, coefs)
 
+    plt.clf()
+
     plt.scatter(OPT, energies)
     plt.plot(x_new, ffit)
     plt.savefig('C.png')
@@ -165,11 +167,13 @@ def EC_BCC_C44(work_dir, atoms, calc, OPTIONS = np.linspace(0.00, 0.05, 6)):
 
     ffit = poly.polyval(x_new, coefs)
 
+    plt.clf()
+
     plt.scatter(OPT, energies)
     plt.plot(x_new, ffit)
     plt.savefig('C44.png')
 
-    os.system('mv C.png {0}'.format(work_dir))
+    os.system('mv C44.png {0}'.format(work_dir))
 
     save(result, OPT)
     save(result, volumes)

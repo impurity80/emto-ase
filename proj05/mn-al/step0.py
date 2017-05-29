@@ -19,7 +19,7 @@ result = '{0}/result-{1}.txt'.format(curr_dir.replace('work', 'temp'),id)
 if rank==0:
     os.system('rm {0}'.format(result))
     save(result, '{0} calculations'.format(id))
-    save(result, 'x,y,v0,e0,B,C,C44,C11,C12,A,Gv,Gr,Gh,C12-C44')
+    save(result, 'x,y,v0,e0,B,C,C44,C11,C12,A,Gv,Gr,Gh,C12-C44,B/Gh,Eh,Ph')
 
 X_OPT = np.linspace(0.0, 0.31, 32)
 Y_OPT = np.linspace(0.10, 0.20, 11)
@@ -38,4 +38,9 @@ for y in Y_OPT:
 
     v0, e0, B, C, C44, C11, C12, A, Gv, Gr, Gh = fcc_elastic_constants(temp_dir+'/'+'{0:0.2f}-{1:0.2f}'.format(x,y), alloys, 3.6+y*0.3)
 
-    save(result, '{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}'.format(x,y,v0, e0, B,C,C44,C11,C12,A,Gv,Gr,Gh,C12-C44))
+    Eh = 9 * B * Gh / (3 * B + Gh)
+    Ph = (3 * B - 2 * Gh) / (3 * B + Gh) / 2
+
+    save(result,
+         '{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14}'.format(v0, e0, B, C, C44, C11, C12, A, Gv,
+                                                                                   Gr, Gh, C12 - C44, B / Gh, Eh, Ph))
