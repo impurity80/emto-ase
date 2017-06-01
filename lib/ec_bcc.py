@@ -142,7 +142,7 @@ def EC_BCC_C44(work_dir, atoms, calc, OPTIONS = np.linspace(0.00, 0.05, 6)):
 
         calc.set(dir='{0}/calc/opt-{1:0.3f}'.format(work_dir, o),
                  lat=11,
-                 dmax=1.60)
+                 dmax=1.59)
 
         a.set_calculator(calc)
 
