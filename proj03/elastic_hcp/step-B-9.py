@@ -19,7 +19,7 @@ rank = comm.Get_rank()
 
 print rank, size
 
-name = 'B-4'
+name = 'B-9'
 
 curr_dir = os.getcwd()
 
@@ -52,12 +52,11 @@ for opt in OPTIONS:
 #    c0 = np.sqrt(8 / 3.0) * a0
     c0= 1.585 * a0
 
-    atoms = Atoms('Fe4',
+    atoms = Atoms('Fe3',
               scaled_positions=[(0, 0, 0),
-                                (0, 1./3., 1./2.),
-                                (1./2., 1./2, 0),
-                                (1./2., 1./3.+1./2., 1./2.)],
-              cell = [[1,0,0],[0, sqrt(3), 0] ,[0,0,1]],
+                                (1./3., 1./3., 1./3.),
+                                (2./3., 2./3., 2./3.)],
+              cell = [[1./2.,sqrt(3)/2.,0],[-1./2., sqrt(3)/2., 0] ,[0,0,1.5]],
               pbc=(1,1,1))
 
 
@@ -66,12 +65,10 @@ for opt in OPTIONS:
     scale = [[a0,0,0],[0,a0,0],[0,0,c0]]
     atoms.set_cell(np.dot( atoms.get_cell(), scale), scale_atoms=True)
 
-    view(atoms)
+    atoms.set_tags([1, 1, 1])
 
     print atoms.get_cell()
     print atoms.positions
-
-    atoms.set_tags([1, 1, 1, 1])
 
     alloys = []
     alloys.append(Alloy(1, 'Fe', fe, 0.0))
@@ -80,7 +77,8 @@ for opt in OPTIONS:
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
              lat=9,
-             kpts=[13, 13, 13],
+             kpts=[7,7,7],
+             amix=0.02,
              dmax=2.52
           #   dos='D',
           #   aw = 0.70,

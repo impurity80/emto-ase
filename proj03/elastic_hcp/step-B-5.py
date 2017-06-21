@@ -19,7 +19,7 @@ rank = comm.Get_rank()
 
 print rank, size
 
-name = 'B-4'
+name = 'B-5'
 
 curr_dir = os.getcwd()
 
@@ -66,8 +66,6 @@ for opt in OPTIONS:
     scale = [[a0,0,0],[0,a0,0],[0,0,c0]]
     atoms.set_cell(np.dot( atoms.get_cell(), scale), scale_atoms=True)
 
-    view(atoms)
-
     print atoms.get_cell()
     print atoms.positions
 
@@ -79,8 +77,8 @@ for opt in OPTIONS:
 
     calc = EMTO()
     calc.set(dir='{0}/calc/{1}/opt-{2:0.3f}'.format(temp_dir, name, opt),
-             lat=9,
-             kpts=[13, 13, 13],
+             lat=12,
+             kpts=[14, 14, 14],
              dmax=2.52
           #   dos='D',
           #   aw = 0.70,

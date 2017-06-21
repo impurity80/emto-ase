@@ -13,7 +13,7 @@ os.system('rm {0}'.format(result))
 save(result, '{0} calculations'.format(id))
 save(result, 'v0,e0,B,C,C44,C11,C12,A,Gv,Gr,Gh,C12-C44,B/Gh,Eh,Ph')
 
-x = 0.9
+x = 0.01
 y = 0.00
 fe = 1.0-x-y
 

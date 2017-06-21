@@ -41,9 +41,8 @@ OPTIONS = np.linspace(0.00, 0.04, 5)
 volumes = []
 energies = []
 
-cr = 0.15
-ni = 0.15
-fe = 1.0
+x = 0.01
+fe = 1.0-x
 
 for opt in OPTIONS:
 
@@ -56,7 +55,9 @@ for opt in OPTIONS:
     atoms.set_cell(np.dot(atoms.get_cell(), scale), scale_atoms=True)
 
     alloys = []
-    alloys.append(Alloy(1, 'Fe_1', fe, 1.0))
+ #   alloys.append(Alloy(1, 'Fe_1', fe, 1.0))
+    alloys.append(Alloy(1, 'Fe', fe, 1.0))
+    alloys.append(Alloy(1, 'Co', x, 1.0))
 
     #    dist = [[1+opt, 0, 0], [0, 1+opt, 0], [0, 0, 1/(1+opt)**2]]
     dist = [[1 + opt, 0, 0], [0, 1 - opt, 0], [0, 0, 1 / (1 - opt ** 2)]]

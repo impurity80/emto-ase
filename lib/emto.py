@@ -451,7 +451,7 @@ class EMTO(Calculator):
         self.kgrn_params['fcd'] = 'Y'
         self.kgrn_params['func'] = 'SCA'
 
-        self.kgrn_params['niter'] = 100
+        self.kgrn_params['niter'] = 50
         self.kgrn_params['nlin'] = 31
         self.kgrn_params['nprn'] = 0
         self.kgrn_params['ncpa'] = 20

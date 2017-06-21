@@ -28,7 +28,7 @@ alloys.append(Alloy(1, 'Al', al / 2, -1.0))
 alloys.append(Alloy(1, 'Co', co / 2, 1.0))
 alloys.append(Alloy(1, 'Co', co / 2, -1.0))
 
-v0, e0, B, C, C44, C11, C12, A, Gv, Gr, Gh = fcc_elastic_constants(temp_dir, alloys)
+v0, e0, B, C, C44, C11, C12, A, Gv, Gr, Gh = fcc_elastic_constants(temp_dir, alloys, 3.55)
 
 Eh = 9*B*Gh/(3*B+Gh)
 Ph = (3*B-2*Gh)/(3*B+Gh)/2
